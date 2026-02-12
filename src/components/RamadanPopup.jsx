@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Moon, Star } from "lucide-react";
-import ProviderModal from "./ProviderModal";
+import { Moon, Star } from "lucide-react"; 
+import UpdateSehri from "./UpdateSehri";
 
 export default function RamadanPopup() {
   const [open, setOpen] = useState(false);
@@ -72,7 +72,7 @@ export default function RamadanPopup() {
           </button>
         </div>
       </div>
-      <ProviderModal isOpen={openn} onClose={() => setOpenn(false)} />
+      <UpdateSehri isOpen={openn} onClose={() => setOpenn(false)} />
     </div>
   );
 }
