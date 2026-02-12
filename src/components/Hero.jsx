@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import ProviderModal from "./ProviderModal";
 import { prayerTimes } from "../data/prayerTimes";
 import UpdateSehri from "./UpdateSehri";
@@ -24,38 +24,39 @@ export default function Hero() {
     );
   };
 
-  const calculateHijri = () => {
-    const now = getIndiaTime();
+const calculateHijri = useCallback(() => {
+  const now = getIndiaTime();
 
-    const diffDays = Math.floor(
-      (RAMADAN_START - now) / (1000 * 60 * 60 * 24)
-    );
+  const diffDays = Math.floor(
+    (RAMADAN_START - now) / (1000 * 60 * 60 * 24)
+  );
 
-    if (diffDays > 0) {
-      const shabanDay = SHABAN_TOTAL_DAYS - diffDays + 1;
-
-      return {
-        month: "Sha'ban",
-        day: shabanDay,
-        year: HIJRI_YEAR,
-        ramadanDay: null,
-        daysToRamadan: diffDays,
-      };
-    }
-
-    const ramadanDay =
-      Math.floor(
-        (now - RAMADAN_START) / (1000 * 60 * 60 * 24)
-      ) + 1;
+  if (diffDays > 0) {
+    const shabanDay = SHABAN_TOTAL_DAYS - diffDays + 1;
 
     return {
-      month: "Ramadan",
-      day: ramadanDay,
+      month: "Sha'ban",
+      day: shabanDay,
       year: HIJRI_YEAR,
-      ramadanDay: ramadanDay,
-      daysToRamadan: 0,
+      ramadanDay: null,
+      daysToRamadan: diffDays,
     };
+  }
+
+  const ramadanDay =
+    Math.floor(
+      (now - RAMADAN_START) / (1000 * 60 * 60 * 24)
+    ) + 1;
+
+  return {
+    month: "Ramadan",
+    day: ramadanDay,
+    year: HIJRI_YEAR,
+    ramadanDay: ramadanDay,
+    daysToRamadan: 0,
   };
+}, []);
+
 
   useEffect(() => {
     const updateClock = () => {
@@ -114,7 +115,7 @@ export default function Hero() {
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
-  }, [mode]);
+ }, [mode, calculateHijri]);
 
   const upcoming =
     ramadanDay !== null
@@ -134,7 +135,7 @@ export default function Hero() {
 
             <h2 className="text-3xl text-[#D4AF37] mb-4">رمضان كريم</h2>
 
-            {/* <p className="mb-2 text-[#D4AF37]">{hijriDate}</p> */}
+            <p className="mb-2 text-[#D4AF37]">{hijriDate}</p>
 
             {ramadanDay ? (
               <p className="mb-4">🌙 Ramadan Day {ramadanDay}</p>

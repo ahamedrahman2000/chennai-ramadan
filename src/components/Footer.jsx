@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Moon, Star, Clock, Instagram, Mail } from "lucide-react";
+import { Moon, Star, Clock, Mail } from "lucide-react";
 
 const RAMADAN_START = new Date("2026-02-19T00:00:00");
 const RAMADAN_TOTAL_DAYS = 30;
@@ -152,12 +152,7 @@ export default function Footer() {
 
           {/* Social */}
           <div className="flex items-center gap-4 mt-4">
-            <a
-              href="#"
-              className="hover:text-[#D4AF37]"
-            >
-              <Instagram size={18} />
-            </a>
+           
             <a
               href="mailto:contact@ramadanchennai.in"
               className="hover:text-[#D4AF37]"

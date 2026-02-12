@@ -1,12 +1,11 @@
 import { useState, useMemo } from "react";
 import { providers } from "../data/providers";
 import { Phone, MapPin, Clock, Star, Share2 } from "lucide-react";
-import UpdateSehri from "./UpdateSehri";
+ 
 
 export default function FindSehri() {
   const [search, setSearch] = useState("");
-  const [areaFilter, setAreaFilter] = useState("All");
-  const [openUpdateForm, setOpenUpdateForm] = useState(false);
+  const [areaFilter, setAreaFilter] = useState("All"); 
 
   // Remove duplicates based on name + area
   const uniqueProviders = useMemo(() => {

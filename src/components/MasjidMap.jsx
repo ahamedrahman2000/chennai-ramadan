@@ -36,6 +36,7 @@ export default function MasjidMap() {
             height="500"
             className="rounded-xl border border-[#333333]"
             loading="lazy"
+             title="Masjid Location Map"
           />
 
         </div>
