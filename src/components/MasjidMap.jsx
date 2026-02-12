@@ -28,8 +28,7 @@ export default function MasjidMap() {
         </p>
 
         {/* Map Card */}
-        <div className="bg-[#222222] p-6 rounded-2xl shadow-2xl border border-[#2A2A2A]">
-
+        
           <iframe
             src="https://www.google.com/maps/d/embed?mid=1w8sJbVcvXSBCEs8HrDN9_Mfy7iv5fEw"
             width="100%"
@@ -39,7 +38,7 @@ export default function MasjidMap() {
              title="Masjid Location Map"
           />
 
-        </div>
+        
 
       </div>
     </div>

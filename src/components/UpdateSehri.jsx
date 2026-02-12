@@ -98,7 +98,7 @@ export default function UpdateSehri() {
 
       {/* Form Modal */}
       {open && (
-        <div className="fixed inset-0 mt-8 bg-black bg-opacity-50 flex items-center justify-center z-500 overflow-auto p-4  ">
+        <div className="fixed inset-0 mt-8 bg-black bg-opacity-50 flex   justify-center z-500 overflow-auto p-4  ">
           <div className="bg-[#1A1A1A] text-white p-6 rounded-lg w-full max-w-lg overflow-y-auto max-h-[90vh] relative">
             {/* Close Button */}
             <button

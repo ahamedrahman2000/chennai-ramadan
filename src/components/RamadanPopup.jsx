@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
 import { Moon, Star } from "lucide-react"; 
-import UpdateSehri from "./UpdateSehri";
+import { Link } from "react-router-dom";
 
 export default function RamadanPopup() {
   const [open, setOpen] = useState(false);
 
-  const [openn, setOpenn] = useState(false);
+ 
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setOpen(true);
+  }, 3000); // 3 seconds
 
- useEffect(() => {
-    const today = new Date().toISOString().split("T")[0]; 
-    const lastShown = localStorage.getItem("ramadanPopupDate");
-
-    if (lastShown !== today) {
-      setTimeout(() => {
-        setOpen(true);
-        localStorage.setItem("ramadanPopupDate", today);
-      }, 800);
-    }
-  }, []);
+  return () => clearTimeout(timer); // proper cleanup
+}, []);
 
   if (!open) return null;
 
@@ -56,13 +51,13 @@ export default function RamadanPopup() {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            onClick={() => setOpenn(true)}
-            href="/register"
+          <Link
+            
+            to="/register-sehri"
             className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold shadow-[0_0_20px_rgba(212,175,55,0.8)] hover:scale-105 transition"
           >
             Register Now
-          </button>
+          </Link>
 
           <button
             onClick={() => setOpen(false)}
@@ -72,7 +67,7 @@ export default function RamadanPopup() {
           </button>
         </div>
       </div>
-      <UpdateSehri isOpen={openn} onClose={() => setOpenn(false)} />
+       
     </div>
   );
 }

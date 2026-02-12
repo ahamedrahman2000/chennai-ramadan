@@ -8,8 +8,8 @@ import Footer from "./components/Footer";
 import FindSehri from "./components/FindSehri";
 import ThankYou from "./components/ThankYou";
 import OrganizationList from "./components/OrganizationList";
-import RamadanChennaiSEO from "./components/RamadanChennaiSEO";
-import UpdateSehri from "./components/UpdateSehri";
+import RamadanChennaiSEO from "./components/RamadanChennaiSEO"; 
+import RegistrationPage from "./components/RegisterSehri";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/organization-list" element={<OrganizationList />} />
-          <Route path="/update-sehri" element={<UpdateSehri />} />
+          <Route path="/register-sehri" element={<RegistrationPage />} />
           <Route
             path="/ramadan-sehri-chennai-2026"
             element={<RamadanChennaiSEO />}

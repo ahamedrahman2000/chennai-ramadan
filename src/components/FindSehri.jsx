@@ -1,11 +1,10 @@
 import { useState, useMemo } from "react";
 import { providers } from "../data/providers";
 import { Phone, MapPin, Clock, Star, Share2 } from "lucide-react";
- 
 
 export default function FindSehri() {
   const [search, setSearch] = useState("");
-  const [areaFilter, setAreaFilter] = useState("All"); 
+  const [areaFilter, setAreaFilter] = useState("All");
 
   // Remove duplicates based on name + area
   const uniqueProviders = useMemo(() => {
@@ -17,42 +16,52 @@ export default function FindSehri() {
     return Array.from(map.values());
   }, []);
 
-  const uniqueAreas = ["All", ...new Set(uniqueProviders.map((p) => p.area || ""))];
+  const uniqueAreas = [
+    "All",
+    ...new Set(uniqueProviders.map((p) => p.area || "")),
+  ];
 
   const filtered = useMemo(() => {
     return uniqueProviders
       .filter((p) => {
         const matchesSearch =
           !search ||
-          (p.name?.toLowerCase().includes(search.toLowerCase()) ||
-            p.area?.toLowerCase().includes(search.toLowerCase()));
+          p.name?.toLowerCase().includes(search.toLowerCase()) ||
+          p.area?.toLowerCase().includes(search.toLowerCase());
         const matchesArea = areaFilter === "All" || p.area === areaFilter;
         return matchesSearch && matchesArea;
       })
       .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
   }, [search, areaFilter, uniqueProviders]);
-
   const handleShare = (provider) => {
     const message = `
 Sehri Location Details:
 Name: ${provider.name || "N/A"}
 Area: ${provider.area || "N/A"}
-Full Address: ${provider.fullAddress || "N/A"}
+Address: ${provider.address || "N/A"}
 Contact: ${provider.contactName || "N/A"} - ${provider.contactNumber || "N/A"}
 Sehri Type: ${provider.sehriType || "N/A"}
-Service: ${provider.serviceTypes?.join(", ") || "N/A"}
-    `;
-    window.open(`https://wa.me/919884680243?text=${encodeURIComponent(message)}`, "_blank");
+Service: ${provider.serviceType || "N/A"}
+Serving Time: ${provider.foodTime || "N/A"}
+Additional Info: ${provider.additionalInfo || "N/A"}
+  `;
+    window.open(
+      `https://wa.me/919884680243?text=${encodeURIComponent(message)}`,
+      "_blank",
+    );
   };
 
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-10">
       {/* Top info */}
-      <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
-        Kindly click on Update if details are missing or incorrect. We will add/update within 15 mins. Anyone can contribute.
-      </div>
+    <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
+  Missing Sehri locations or details? 
+  If you know any providing areas, please use the Register button on the Home page to add or update information and help the community.
+</div>
 
-      <h1 className="text-3xl font-bold text-center mb-6">Sehri Locations – Chennai</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">
+        Sehri Locations – Chennai
+      </h1>
 
       {/* FILTERS: Search + Area */}
       <div className="max-w-7xl mx-auto flex gap-4 mb-10">
@@ -87,56 +96,73 @@ Service: ${provider.serviceTypes?.join(", ") || "N/A"}
                 <h3 className="text-xl font-bold text-[#D4AF37]">
                   {provider.name || "Unknown Masjid / Organization"}
                 </h3>
-                {provider.featured && <Star className="text-yellow-400" size={18} />}
+                {provider.featured && (
+                  <Star className="text-yellow-400" size={18} />
+                )}
               </div>
 
               {/* Sehri Type */}
               <span
                 className={`text-xs px-3 py-1 rounded-full mt-2 inline-block ${
-                  provider.sehriType === "Free" ? "bg-green-600 text-white" : "bg-yellow-500 text-black"
+                  provider.sehriType === "Free"
+                    ? "bg-green-600 text-white"
+                    : "bg-yellow-500 text-black"
                 }`}
               >
                 {provider.sehriType || "Not specified"}
               </span>
 
               {/* Area */}
-              <div className={`flex items-center gap-2 mt-3 ${!provider.area ? "text-red-500" : "text-[#A1A1AA]"}`}>
+              <div
+                className={`flex items-center gap-2 mt-3 ${!provider.area ? "text-red-500" : "text-[#A1A1AA]"}`}
+              >
                 <MapPin size={16} />
                 {provider.area || "Area missing"}
               </div>
 
               {/* Full Address */}
-              <p className={`text-sm mt-1 ${!provider.fullAddress ? "text-red-500" : "text-[#A1A1AA]"}`}>
-                {provider.fullAddress || "Address missing"}
+              <p
+                className={`text-sm mt-1 ${!provider.address ? "text-red-500" : "text-[#A1A1AA]"}`}
+              >
+                {provider.address || "Address missing"}
               </p>
 
-              {/* Services */}
+              {/* Service Type */}
               <div className="flex flex-wrap gap-2 mt-4">
-                {(provider.serviceTypes && provider.serviceTypes.length > 0
-                  ? provider.serviceTypes
-                  : ["Service not specified"]
-                ).map((service, i) => (
-                  <span key={i} className="text-xs bg-[#2A2A2A] px-3 py-1 rounded-full">
-                    {service}
+                {provider.serviceType ? (
+                  <span className="text-xs bg-[#2A2A2A] px-3 py-1 rounded-full">
+                    {provider.serviceType}
                   </span>
-                ))}
+                ) : (
+                  <span className="text-xs bg-[#2A2A2A] px-3 py-1 rounded-full">
+                    Service not specified
+                  </span>
+                )}
               </div>
 
-              {/* Serving Time */}
+              {/* Food / Serving Time */}
               <div className="flex items-center gap-2 mt-4 text-sm">
                 <Clock size={16} />
-                {provider.servingTime || "Time not available"}
+                {provider.foodTime || "Time not available"}
               </div>
 
               {/* Contact */}
-              {provider.contactName || provider.contactNumber ? (
+              {provider.contactName !== "-" ||
+              provider.contactNumber !== "-" ? (
                 <div className="flex items-center gap-2 mt-4 font-semibold">
                   <Phone size={16} />
-                  <a href={`tel:${provider.contactNumber || ""}`}>
-                    {provider.contactName || "-"} – {provider.contactNumber || "-"}
+                  <a href={`tel:${provider.contactNumber}`}>
+                    {provider.contactName || "-"} –{" "}
+                    {provider.contactNumber || "-"}
                   </a>
                 </div>
               ) : null}
+              {/* Additional Info */}
+              {provider.additionalInfo && (
+                <p className="text-sm mt-3 text-[#A1A1AA]">
+                  {provider.additionalInfo}
+                </p>
+              )}
             </div>
 
             {/* Card Buttons */}
@@ -147,7 +173,6 @@ Service: ${provider.serviceTypes?.join(", ") || "N/A"}
               >
                 <Share2 size={16} /> Share
               </button>
-           
             </div>
           </div>
         ))}
@@ -155,10 +180,10 @@ Service: ${provider.serviceTypes?.join(", ") || "N/A"}
 
       {/* No results */}
       {filtered.length === 0 && (
-        <p className="text-center text-red-500 mt-10 text-lg">No providers found.</p>
+        <p className="text-center text-red-500 mt-10 text-lg">
+          No providers found.
+        </p>
       )}
-
-     
     </div>
   );
 }

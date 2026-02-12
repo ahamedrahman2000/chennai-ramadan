@@ -5,4 +5,5 @@
 body {
   background: #1A1A1A;
   color: #E5E7EB;
+  overflow-x: hidden;
 }

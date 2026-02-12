@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import ProviderModal from "./ProviderModal";
-import { prayerTimes } from "../data/prayerTimes";
-import UpdateSehri from "./UpdateSehri";
+import { prayerTimes } from "../data/prayerTimes"; 
+import { Link } from "react-router-dom";
 
 const RAMADAN_START = new Date("2026-02-19T00:00:00+05:30");
 const HIJRI_YEAR = 1447;
@@ -20,43 +20,38 @@ export default function Hero() {
     return new Date(
       new Date().toLocaleString("en-US", {
         timeZone: "Asia/Kolkata",
-      })
+      }),
     );
   };
 
-const calculateHijri = useCallback(() => {
-  const now = getIndiaTime();
+  const calculateHijri = useCallback(() => {
+    const now = getIndiaTime();
 
-  const diffDays = Math.floor(
-    (RAMADAN_START - now) / (1000 * 60 * 60 * 24)
-  );
+    const diffDays = Math.floor((RAMADAN_START - now) / (1000 * 60 * 60 * 24));
 
-  if (diffDays > 0) {
-    const shabanDay = SHABAN_TOTAL_DAYS - diffDays + 1;
+    if (diffDays > 0) {
+      const shabanDay = SHABAN_TOTAL_DAYS - diffDays + 1;
+
+      return {
+        month: "Sha'ban",
+        day: shabanDay,
+        year: HIJRI_YEAR,
+        ramadanDay: null,
+        daysToRamadan: diffDays,
+      };
+    }
+
+    const ramadanDay =
+      Math.floor((now - RAMADAN_START) / (1000 * 60 * 60 * 24)) + 1;
 
     return {
-      month: "Sha'ban",
-      day: shabanDay,
+      month: "Ramadan",
+      day: ramadanDay,
       year: HIJRI_YEAR,
-      ramadanDay: null,
-      daysToRamadan: diffDays,
+      ramadanDay: ramadanDay,
+      daysToRamadan: 0,
     };
-  }
-
-  const ramadanDay =
-    Math.floor(
-      (now - RAMADAN_START) / (1000 * 60 * 60 * 24)
-    ) + 1;
-
-  return {
-    month: "Ramadan",
-    day: ramadanDay,
-    year: HIJRI_YEAR,
-    ramadanDay: ramadanDay,
-    daysToRamadan: 0,
-  };
-}, []);
-
+  }, []);
 
   useEffect(() => {
     const updateClock = () => {
@@ -115,7 +110,7 @@ const calculateHijri = useCallback(() => {
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
- }, [mode, calculateHijri]);
+  }, [mode, calculateHijri]);
 
   const upcoming =
     ramadanDay !== null
@@ -150,9 +145,7 @@ const calculateHijri = useCallback(() => {
                 <button
                   onClick={() => setMode("sehar")}
                   className={`px-4 py-2 rounded ${
-                    mode === "sehar"
-                      ? "bg-[#D4AF37] text-black"
-                      : "bg-gray-700"
+                    mode === "sehar" ? "bg-[#D4AF37] text-black" : "bg-gray-700"
                   }`}
                 >
                   Sehri Countdown
@@ -161,9 +154,7 @@ const calculateHijri = useCallback(() => {
                 <button
                   onClick={() => setMode("iftar")}
                   className={`px-4 py-2 rounded ${
-                    mode === "iftar"
-                      ? "bg-[#D4AF37] text-black"
-                      : "bg-gray-700"
+                    mode === "iftar" ? "bg-[#D4AF37] text-black" : "bg-gray-700"
                   }`}
                 >
                   Iftar Countdown
@@ -171,9 +162,7 @@ const calculateHijri = useCallback(() => {
               </div>
             )}
 
-            <p className="text-xl text-[#D4AF37] mb-6">
-              ⏳ {countdown}
-            </p>
+            <p className="text-xl text-[#D4AF37] mb-6">⏳ {countdown}</p>
 
             <div className="text-center mt-4 text-[#E5E7EB] max-w-xl mx-auto">
               We are updating Sehri locations in Chennai to help students,
@@ -182,7 +171,12 @@ const calculateHijri = useCallback(() => {
             </div>
 
             <div className="flex justify-center mt-6 gap-4">
-              <UpdateSehri />
+              <Link
+                to="/register-sehri"
+                className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold shadow-[0_0_20px_rgba(212,175,55,0.8)] hover:scale-105 transition"
+              >
+                Register Now
+              </Link>
             </div>
           </div>
 
@@ -210,10 +204,7 @@ const calculateHijri = useCallback(() => {
         </div>
       </section>
 
-      <ProviderModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-      />
+      <ProviderModal isOpen={open} onClose={() => setOpen(false)} />
     </>
   );
 }
