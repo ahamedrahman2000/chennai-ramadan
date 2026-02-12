@@ -52,7 +52,8 @@ Additional Info: ${provider.additionalInfo || "N/A"}
   };
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-10">
+    <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-10 overflow-x-hidden">
+
       {/* Top info */}
     <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
   Missing Sehri locations or details? 
@@ -64,7 +65,8 @@ Additional Info: ${provider.additionalInfo || "N/A"}
       </h1>
 
       {/* FILTERS: Search + Area */}
-      <div className="max-w-7xl mx-auto flex gap-4 mb-10">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row gap-4 mb-10">
+
         <input
           type="text"
           placeholder="Search by name or area..."
