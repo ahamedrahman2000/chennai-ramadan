@@ -167,7 +167,7 @@ export default function Hero() {
             <div className="text-center mt-4 text-[#E5E7EB] max-w-xl mx-auto">
               We are updating Sehri locations in Chennai to help students,
               hostelers, and employees. Kindly update your location info by
-              clicking below. May Allah reward your help!
+              clicking below. May Allah reward your help! 
             </div>
 
             <div className="flex justify-center mt-6 gap-4">

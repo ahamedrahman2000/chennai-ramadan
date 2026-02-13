@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
-import { Moon, Star } from "lucide-react"; 
+import { Moon, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function RamadanPopup() {
   const [open, setOpen] = useState(false);
 
- 
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setOpen(true);
-  }, 3000); // 3 seconds
+  useEffect(() => {
+    const shownCount = parseInt(
+      localStorage.getItem("popupShownCount") || "0",
+      10,
+    );
 
-  return () => clearTimeout(timer); // proper cleanup
-}, []);
+    if (shownCount >= 2) return; // Already shown 2 times → stop
+
+    const timer = setTimeout(() => {
+      setOpen(true);
+
+      // Increase count
+      localStorage.setItem("popupShownCount", shownCount + 1);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!open) return null;
 
@@ -52,7 +61,6 @@ useEffect(() => {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            
             to="/register-sehri"
             className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold shadow-[0_0_20px_rgba(212,175,55,0.8)] hover:scale-105 transition"
           >
@@ -67,7 +75,6 @@ useEffect(() => {
           </button>
         </div>
       </div>
-       
     </div>
   );
 }
