@@ -47,7 +47,7 @@ export default function FeedbackForm() {
   };
 
   return (
-    <div className="flex justify-center mt-6">
+    <div className="flex justify-center  mt-12">
       <button
         onClick={() => setOpen(true)}
         className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold animate-pulse shadow-[0_0_30px_rgba(212,175,55,1)]"

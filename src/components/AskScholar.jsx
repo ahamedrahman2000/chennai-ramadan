@@ -11,7 +11,7 @@ export default function AskScholar() {
 
   const [showPopup, setShowPopup] = useState(false);
 
-  const scholarNumber = "9884680243"; // WhatsApp number with country code
+  const scholarNumber = "919551450452"; // WhatsApp number with country code
 
   const handleChange = (e) => {
     const { name, value } = e.target;

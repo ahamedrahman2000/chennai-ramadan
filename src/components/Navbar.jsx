@@ -6,12 +6,12 @@ import {
   MapPin,
   BookOpen,
   Book,
-  MessageCircle, 
+  MessageCircle,
   Menu,
-  X, 
+  X,
   User,
   AlertTriangle,
-} from "lucide-react"; 
+} from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +42,7 @@ export default function Navbar() {
             <Link to="/coming-soon" className="hover:text-[#FFD700] transition">
               Quran
             </Link>
+
             <Link to="/find-sehri" className="hover:text-[#FFD700] transition">
               Find Sehri
             </Link>
@@ -56,6 +57,13 @@ export default function Navbar() {
               className="hover:text-[#FFD700] transition"
             >
               Masjid | Organization List
+            </Link>
+            <Link
+              to="/ask-scholar"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
+            >
+              Ask to Scholar
             </Link>
           </div>
 
@@ -191,7 +199,7 @@ export default function Navbar() {
           {/* Footer - Share Button */}
           <div className="px-6 py-4">
             <a
-             href={`https://api.whatsapp.com/send?text=Check%20out%20Chennai%20Ramadan%202026!%20Find%20Free%20Sehri%20locations%20and%20Prayer%20Times.%20If%20you%20know%20any%20area%20providing%20Sehri%20food,%20please%20add%20or%20update%20it%20here:%20https://chennairamadan.org`}
+              href={`https://api.whatsapp.com/send?text=Check%20out%20Chennai%20Ramadan%202026!%20Find%20Free%20Sehri%20locations%20and%20Prayer%20Times.%20If%20you%20know%20any%20area%20providing%20Sehri%20food,%20please%20add%20or%20update%20it%20here:%20https://chennairamadan.org`}
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center bg-[#D4AF37] text-[#111111] font-semibold py-2 rounded hover:bg-yellow-400 transition"

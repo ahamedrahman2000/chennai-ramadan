@@ -1,61 +1,43 @@
 import { providers } from "../data/providers";
 
 export default function OrganizationList() {
- 
   const sortedProviders = [...providers].sort((a, b) =>
     a.name.localeCompare(b.name)
   );
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-20">
+    <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 py-20">
       
-      <h1 className="text-3xl font-bold text-center mb-10">
+      <h1 className="text-3xl md:text-4xl font-bold text-center text-[#D4AF37] mb-12">
         Masjid / Organization List (A–Z)
       </h1>
 
-      <div className="max-w-6xl mx-auto overflow-x-auto">
+      <div className="max-w-7xl mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-        <table className="w-full border-collapse bg-[#222222] rounded-xl overflow-hidden">
-          
-          <thead className="bg-[#2A2A2A] text-[#D4AF37]">
-            <tr>
-              <th className="p-4 text-left">#</th>
-              <th className="p-4 text-left">Organization Name</th>
-              <th className="p-4 text-left">Area</th> 
-              <th className="p-4 text-left">Contact</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {sortedProviders.map((provider, index) => (
-              <tr
-                key={provider.id}
-                className="border-t border-[#2A2A2A] hover:bg-[#2C2C2C] transition"
+        {sortedProviders.map((provider, index) => (
+          <div
+            key={provider.id}
+            className="bg-[#222222] rounded-xl shadow-lg p-6 hover:shadow-[#D4AF37]/50 transition"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm text-[#A1A1AA] font-medium">#{index + 1}</span>
+              <a
+                href={`tel:${provider.contactNumber}`}
+                className="text-[#D4AF37] font-semibold hover:text-yellow-400"
               >
-                <td className="p-4">{index + 1}</td>
+                {provider.contactNumber}
+              </a>
+            </div>
 
-                <td className="p-4 font-semibold">
-                  {provider.name}
-                </td>
+            <h2 className="text-lg md:text-xl font-bold text-[#FFD700] mb-1">
+              {provider.name}
+            </h2>
 
-                <td className="p-4">{provider.area}</td>
-
-               
-
-               
-                <td className="p-4">
-                  <a
-                    href={`tel:${provider.contactNumber}`}
-                    className="text-[#D4AF37]"
-                  >
-                    {provider.contactNumber}
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-
-        </table>
+            <p className="text-[#E5E7EB]/80 text-sm md:text-base">
+              {provider.area}
+            </p>
+          </div>
+        ))}
 
       </div>
     </div>

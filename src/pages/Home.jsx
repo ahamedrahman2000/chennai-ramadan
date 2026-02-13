@@ -1,5 +1,6 @@
 import { AboutUs } from "../components/AboutUs";
 import Disclaimer from "../components/DisclaimerModal";
+import FeaturesSection from "../components/FeaturedSections";
 import FeedbackForm from "../components/FeddbackForm";
 import Hero from "../components/Hero";
 import MasjidMap from "../components/MasjidMap";
@@ -15,8 +16,9 @@ export default function Home() {
       <MasjidMap />
       <AboutUs/>
       <MissionSection /> 
-      <SehriStats/> 
+      <SehriStats/>  
       <Disclaimer />
+      <FeaturesSection/>
       <FeedbackForm/>
     </>
   );
