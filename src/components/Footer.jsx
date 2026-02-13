@@ -113,17 +113,17 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/duas" className="hover:text-[#D4AF37]">
+                <Link to="/dua" className="hover:text-[#D4AF37]">
                   Duas
                 </Link>
               </li>
               <li>
-                <Link to="/hadith" className="hover:text-[#D4AF37]">
+                <Link to="/coming-soon" className="hover:text-[#D4AF37]">
                   Hadith
                 </Link>
               </li>
               <li>
-                <Link to="/quran" className="hover:text-[#D4AF37]">
+                <Link to="/coming-soon" className="hover:text-[#D4AF37]">
                   Quran
                 </Link>
               </li>
@@ -132,7 +132,8 @@ export default function Footer() {
 
           <div className="mt-4">
             <a
-              href={`https://api.whatsapp.com/send?text=Check%20out%20Chennai%20Ramadan%202026!%20Find%20Free%20Sehri%20locations%20and%20Prayer%20Times.%20If%20you%20know%20any%20area%20providing%20Sehri%20food,%20please%20add%20or%20update%20it%20here:%20https://chennairamadan.org`}
+              href={`https://api.whatsapp.com/send?text=Check%20out%20Chennai%20Ramadan%202026!%20Find%20Free%20Sehri%20locations%20and%20Prayer%20Times.%20If%20you%20know%20any%20area%20providing%20Sehri%20food,%20please%20add%20or%20update%20it%20here:%20https://www.chennairamadan.org`}
+
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-[#D4AF37] text-[#111111] font-semibold py-2 px-4 rounded hover:bg-yellow-400 transition"

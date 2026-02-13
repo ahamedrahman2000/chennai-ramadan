@@ -12,34 +12,47 @@ export default function OrganizationList() {
         Masjid / Organization List (A–Z)
       </h1>
 
-      <div className="max-w-7xl mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="max-w-6xl mx-auto overflow-x-auto rounded-xl shadow-lg border border-[#D4AF37]">
+        <table className="w-full border-collapse">
+          
+          <thead className="bg-[#2A2A2A] text-[#FFD700] sticky top-0">
+            <tr>
+              <th className="p-4 text-left">#</th>
+              <th className="p-4 text-left">Organization Name</th>
+              <th className="p-4 text-left">Area</th> 
+              <th className="p-4 text-left">Contact</th>
+            </tr>
+          </thead>
 
-        {sortedProviders.map((provider, index) => (
-          <div
-            key={provider.id}
-            className="bg-[#222222] rounded-xl shadow-lg p-6 hover:shadow-[#D4AF37]/50 transition"
-          >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm text-[#A1A1AA] font-medium">#{index + 1}</span>
-              <a
-                href={`tel:${provider.contactNumber}`}
-                className="text-[#D4AF37] font-semibold hover:text-yellow-400"
+          <tbody>
+            {sortedProviders.map((provider, index) => (
+              <tr
+                key={provider.id}
+                className={`border-t border-[#2A2A2A] transition hover:bg-[#2C2C2C] ${
+                  index % 2 === 0 ? "bg-[#1F1F1F]" : "bg-[#222222]"
+                }`}
               >
-                {provider.contactNumber}
-              </a>
-            </div>
+                <td className="p-4">{index + 1}</td>
+                <td className="p-4 font-semibold text-[#FFD700]">{provider.name}</td>
+                <td className="p-4">{provider.area}</td>
+                <td className="p-4">
+                  <a
+                    href={`tel:${provider.contactNumber}`}
+                    className="text-[#D4AF37] hover:text-yellow-400 transition"
+                  >
+                    {provider.contactNumber}
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
 
-            <h2 className="text-lg md:text-xl font-bold text-[#FFD700] mb-1">
-              {provider.name}
-            </h2>
-
-            <p className="text-[#E5E7EB]/80 text-sm md:text-base">
-              {provider.area}
-            </p>
-          </div>
-        ))}
-
+        </table>
       </div>
+
+      <p className="text-center text-[#A1A1AA] mt-6 text-sm">
+        *Click the phone number to call the organization directly.
+      </p>
     </div>
   );
 }

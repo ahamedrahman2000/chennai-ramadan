@@ -19,14 +19,25 @@ export default function Navbar() {
   return (
     <nav className="bg-[#111111] border-b border-[#2A2A2A] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center space-x-2 text-[#D4AF37] font-bold text-lg whitespace-nowrap"
-          >
-            <span>🌙 Chennai Ramadan</span>
-          </Link>
+        <div className="flex justify-between items-center h-16 px-4">
+          {/* Left side: Mobile Hamburger + Logo */}
+          <div className="flex items-center space-x-3">
+            {/* Hamburger only on mobile */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden text-[#D4AF37]"
+            >
+              {isOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
+
+            {/* Logo */}
+            <Link
+              to="/"
+              className="flex items-center space-x-2 text-[#D4AF37] font-bold text-lg whitespace-nowrap"
+            >
+              <span>🌙 Chennai Ramadan</span>
+            </Link>
+          </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6 text-sm text-[#E5E7EB]">
@@ -42,7 +53,6 @@ export default function Navbar() {
             <Link to="/coming-soon" className="hover:text-[#FFD700] transition">
               Quran
             </Link>
-
             <Link to="/find-sehri" className="hover:text-[#FFD700] transition">
               Find Sehri
             </Link>
@@ -60,29 +70,22 @@ export default function Navbar() {
             </Link>
             <Link
               to="/ask-scholar"
-              onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
             >
               Ask to Scholar
             </Link>
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-[#D4AF37]"
-          >
-            {isOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
         </div>
       </div>
 
-      {/* Mobile Side Menu (Right Slide) */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-gradient-to-b from-[#1a1a1a] to-[#2A2A2A] z-50 transform
-    transition-transform duration-300 shadow-lg border-l-2 border-[#D4AF37] rounded-tl-[5px] rounded-br-[5px]
-    flex flex-col ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-[#1a1a1a] to-[#2A2A2A] z-50
+    transform transition-transform duration-300 shadow-lg border-r-2 border-[#D4AF37]
+    flex flex-col rounded-tr-[15px] rounded-br-[15px]
+    ${isOpen ? "translate-x-0" : "-translate-x-full"} overflow-y-auto`}
       >
+        {/* Navbar Content */}
+
         {/* Logo + Close Button */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-[#D4AF37]">
           <div className="flex items-center space-x-2">
@@ -199,7 +202,7 @@ export default function Navbar() {
           {/* Footer - Share Button */}
           <div className="px-6 py-4">
             <a
-              href={`https://api.whatsapp.com/send?text=Check%20out%20Chennai%20Ramadan%202026!%20Find%20Free%20Sehri%20locations%20and%20Prayer%20Times.%20If%20you%20know%20any%20area%20providing%20Sehri%20food,%20please%20add%20or%20update%20it%20here:%20https://chennairamadan.org`}
+              href={`https://api.whatsapp.com/send?text=Check%20out%20Chennai%20Ramadan%202026!%20Find%20Free%20Sehri%20locations%20and%20Prayer%20Times.%20If%20you%20know%20any%20area%20providing%20Sehri%20food,%20please%20add%20or%20update%20it%20here:%20https://www.chennairamadan.org`}
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center bg-[#D4AF37] text-[#111111] font-semibold py-2 rounded hover:bg-yellow-400 transition"

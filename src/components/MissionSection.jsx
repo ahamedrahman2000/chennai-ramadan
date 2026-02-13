@@ -10,7 +10,7 @@ export default function MissionSection() {
             SEHRI / IFTAR TABLE
         ======================== */}
         <div className="bg-[#222222] p-6 rounded-2xl border border-[#2A2A2A] shadow-lg">
-          <div className="flex items-center gap-2 text-[#D4AF37] mb-4">
+          <div className="flex items-center justify-center gap-2 text-[#D4AF37] mb-4">
             <Moon size={20} />
             <h3 className="text-xl font-semibold">
               Sehri & Iftar Time <br />
@@ -20,12 +20,12 @@ export default function MissionSection() {
             </h3>
           </div>
 
-          <p className="text-xs text-[#A1A1AA] mb-4">
+          <p className="text-xs text-red-500 text-center mb-4">
             Fiqh Jafria: Suhoor -10min | Iftar +10min
           </p>
 
           <div className="overflow-y-auto max-h-[500px]">
-            <table className="w-full text-sm text-left">
+            <table className="w-full text-sm text-center">
               <thead className="sticky top-0 bg-[#1A1A1A] text-[#D4AF37]">
                 <tr>
                   <th className="py-2">Day</th>

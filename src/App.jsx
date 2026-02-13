@@ -8,19 +8,21 @@ import Footer from "./components/Footer";
 import FindSehri from "./components/FindSehri";
 import ThankYou from "./components/ThankYou";
 import OrganizationList from "./components/OrganizationList";
-import RamadanChennaiSEO from "./components/RamadanChennaiSEO"; 
+import RamadanChennaiSEO from "./components/RamadanChennaiSEO";
 import RegistrationPage from "./components/RegisterSehri";
 import SehriTicker from "./components/SehriTicker";
 import AskScholar from "./components/AskScholar";
 import { AboutUs } from "./components/AboutUs";
 import DuasPage from "./components/Duas";
 import ComingSoon from "./components/ComingSoon";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <div className="flex flex-col min-h-screen bg-[#1A1A1A] text-[#E5E7EB]">
       <Navbar />
-       <SehriTicker/>
+      <SehriTicker />
+      <ScrollToTop />
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />

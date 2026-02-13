@@ -160,6 +160,7 @@ export default function AskScholar() {
             </h3>
             <p className="text-white mb-4">
               Your question has been sent via WhatsApp from the Chennai Ramadan App.
+              Kindly wait you will get as soon as possible.
             </p>
            
           </div>
