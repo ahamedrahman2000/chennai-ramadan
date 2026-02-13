@@ -1,7 +1,7 @@
 const SehriTicker = () => {
 const text = [
-  "Find Free Sehri and Sahar providing areas in Chennai during Ramadan 2026.", 
-  "Share our site to Friends, Colleagues, Employees, and Sahar Providing Community"
+  "If you are providing Sehri / providing in your area / in your Masjid in Chennai, please register with us.",
+  "May Allah reward you."
 ];
   return (
     <div className="w-full   text-white overflow-hidden  shadow-sm">

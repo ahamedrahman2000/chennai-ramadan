@@ -2,6 +2,8 @@ import { useState } from "react";
 
 export default function RegistrationPage() {
   const [showThanks, setShowThanks] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showOptionalNote, setShowOptionalNote] = useState(false);
 
   const [formData, setFormData] = useState({
     organization: "",
@@ -18,20 +20,17 @@ export default function RegistrationPage() {
   });
 
   const [errors, setErrors] = useState({});
-
   const whatsappNumber = "919884680243";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // For contact number, allow only digits
-    if (name === "contactNumber") {
+    if (name === "contactNumber" || name === "secondNumber") {
       if (!/^\d*$/.test(value)) return;
     }
 
     setFormData({ ...formData, [name]: value });
 
-    // clear error while typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -40,70 +39,60 @@ export default function RegistrationPage() {
   const validateForm = () => {
     const newErrors = {};
 
-    // Organization: letters and numbers only, max 30
-    if (!formData.organization) {
+    // Organization required
+    if (!formData.organization.trim()) {
       newErrors.organization = "Organization is required";
     } else if (!/^[a-zA-Z0-9 ]{1,30}$/.test(formData.organization)) {
       newErrors.organization =
         "Only letters and numbers allowed (max 30 characters)";
     }
 
-    // Service Type
-    if (!formData.serviceType) {
-      newErrors.serviceType = "Please select service type";
-    }
-
-    // Sehri Type
-    if (!formData.sehriType) {
-      newErrors.sehriType = "Please select Sehri type";
-    }
-
-    // Serving Time
-    if (!formData.servingTime) {
-      newErrors.servingTime = "Please select serving time";
-    }
-
-    // Area: letters and numbers only, max 30
-    if (!formData.area) {
+    // Area required
+    if (!formData.area.trim()) {
       newErrors.area = "Area is required";
     } else if (!/^[a-zA-Z0-9 ]{1,30}$/.test(formData.area)) {
       newErrors.area =
         "Only letters and numbers allowed (max 30 characters)";
     }
 
-    // Full Address: max 300
-    if (!formData.fullAddress) {
-      newErrors.fullAddress = "Full Address is required";
-    } else if (formData.fullAddress.length > 300) {
-      newErrors.fullAddress = "Maximum 300 characters allowed";
-    }
-
-    // Contact Name: letters and space only
-    if (!formData.contactName) {
-      newErrors.contactName = "Contact Name is required";
-    } else if (!/^[a-zA-Z ]{1,50}$/.test(formData.contactName)) {
-      newErrors.contactName = "Only letters allowed (max 50 characters)";
-    }
-
-    // Contact Number: numbers only, exactly 10 digits
-    if (!formData.contactNumber) {
-      newErrors.contactNumber = "Contact Number is required";
-    } else if (!/^\d{10}$/.test(formData.contactNumber)) {
-      newErrors.contactNumber =
-        "Contact Number must be exactly 10 digits";
-    }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+
+    if (Object.keys(newErrors).length > 0) {
+      setAlertMessage("Please fill the required fields correctly.");
+      return false;
+    }
+
+    return true;
   };
 
-  const handleSubmit = () => {
-    if (!validateForm()) return;
-    setShowThanks(true);
-  };
+const handleSubmit = () => {
+  if (!validateForm()) return;
 
-  const handleSend = () => {
-    const message = `
+  const optionalFields = [
+    "serviceType",
+    "sehriType",
+    "servingTime",
+    "fullAddress",
+    "locationLink",
+    "contactName",
+    "contactNumber",
+    "secondNumber",
+    "additionalInfo",
+  ];
+
+  const hasMissingOptional = optionalFields.some(
+    (field) => !formData[field]
+  );
+
+  // Show optional note ONLY before sending
+  setShowOptionalNote(hasMissingOptional);
+
+  setShowThanks(true);
+};
+
+
+const handleSend = () => {
+  const message = `
 *Sehri / Iftar Registration*
 
 *Organization:* ${formData.organization}
@@ -117,13 +106,21 @@ export default function RegistrationPage() {
 *Contact Number:* ${formData.contactNumber}
 *Second Number:* ${formData.secondNumber}
 *Additional Info:* ${formData.additionalInfo}
-    `;
+  `;
 
-    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message
-    )}`;
-    window.open(whatsappLink, "_blank");
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    message
+  )}`;
+
+  window.open(whatsappLink, "_blank");
+
+  // Hide optional note permanently after sending
+  setShowOptionalNote(false);
+};
+
+  const resetForm = () => {
     setShowThanks(false);
+    setShowOptionalNote(false);
     setFormData({
       organization: "",
       serviceType: "",
@@ -143,6 +140,7 @@ export default function RegistrationPage() {
   const renderInput = (label, name, placeholder, type = "text", rows) => (
     <div className="mb-4">
       <label className="block mb-1 font-semibold">{label}</label>
+
       {type === "textarea" ? (
         <textarea
           name={name}
@@ -151,7 +149,9 @@ export default function RegistrationPage() {
           onChange={handleChange}
           rows={rows || 3}
           className={`w-full p-3 rounded ${
-            errors[name] ? "border-2 border-red-500" : "border-2 border-[#D4AF37]"
+            errors[name]
+              ? "border-2 border-red-500"
+              : "border-2 border-[#D4AF37]"
           } bg-[#2A2A2A]`}
         />
       ) : type === "select" ? (
@@ -160,7 +160,9 @@ export default function RegistrationPage() {
           value={formData[name]}
           onChange={handleChange}
           className={`w-full p-3 rounded ${
-            errors[name] ? "border-2 border-red-500" : "border-2 border-[#D4AF37]"
+            errors[name]
+              ? "border-2 border-red-500"
+              : "border-2 border-[#D4AF37]"
           } bg-[#2A2A2A]`}
         >
           <option value="">Select {label}</option>
@@ -194,11 +196,16 @@ export default function RegistrationPage() {
           value={formData[name]}
           onChange={handleChange}
           className={`w-full p-3 rounded ${
-            errors[name] ? "border-2 border-red-500" : "border-2 border-[#D4AF37]"
+            errors[name]
+              ? "border-2 border-red-500"
+              : "border-2 border-[#D4AF37]"
           } bg-[#2A2A2A]`}
         />
       )}
-      {errors[name] && <p className="text-red-500 mt-1 text-sm">{errors[name]}</p>}
+
+      {errors[name] && (
+        <p className="text-red-500 mt-1 text-sm">{errors[name]}</p>
+      )}
     </div>
   );
 
@@ -208,22 +215,22 @@ export default function RegistrationPage() {
         <h2 className="text-3xl font-bold mb-4 text-[#D4AF37] text-center">
           Sehri / Iftar Registration
         </h2>
-        <p className="text-center text-[#A1A1AA] mb-8">
-          Register your Masjid / Organization providing Sehri or Iftar meals
-          in Chennai.
-        </p>
 
-        {renderInput("Organization / Masjid Name *", "organization", "e.g. Masjid-e-Noor")}
-        {renderInput("Type of Service *", "serviceType", "", "select")}
-        {renderInput("Sehri Type *", "sehriType", "", "select")}
-        {renderInput("Serving Time *", "servingTime", "", "select")}
+        {renderInput(
+          "Organization / Masjid Name *",
+          "organization",
+          "e.g. Masjid-e-Noor"
+        )}
+        {renderInput("Type of Service", "serviceType", "", "select")}
+        {renderInput("Sehri Type", "sehriType", "", "select")}
+        {renderInput("Serving Time", "servingTime", "", "select")}
         {renderInput("Area *", "area", "e.g. Adyar, T. Nagar")}
-        {renderInput("Full Address *", "fullAddress", "Enter complete address", "textarea")}
-        {renderInput("Google Maps Link (Optional)", "locationLink", "Paste Google Maps link")}
-        {renderInput("Contact Name *", "contactName", "Full name of contact person")}
-        {renderInput("Contact Number *", "contactNumber", "10 digit number only")}
-        {renderInput("Second Number (Optional)", "secondNumber", "10 digit number only")}
-        {renderInput("Additional Info (Optional)", "additionalInfo", "Extra details", "textarea")}
+        {renderInput("Full Address", "fullAddress", "Enter complete address", "textarea")}
+        {renderInput("Google Maps Link", "locationLink", "Paste Google Maps link")}
+        {renderInput("Contact Name", "contactName", "Full name")}
+        {renderInput("Contact Number", "contactNumber", "10 digit number only")}
+        {renderInput("Second Number", "secondNumber", "10 digit number only")}
+        {renderInput("Additional Info", "additionalInfo", "Extra details", "textarea")}
 
         <button
           onClick={handleSubmit}
@@ -233,19 +240,53 @@ export default function RegistrationPage() {
         </button>
       </div>
 
+      {alertMessage && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/70">
+          <div className="bg-[#1A1A1A] border-2 border-red-500 rounded-xl p-6 max-w-sm text-center">
+            <h3 className="text-xl font-bold text-red-500 mb-4">Alert</h3>
+            <p className="text-white mb-6">{alertMessage}</p>
+            <button
+              onClick={() => setAlertMessage("")}
+              className="bg-red-500 text-white py-2 px-6 rounded-lg font-semibold"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
       {showThanks && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/70">
-          <div className="bg-[#1A1A1A] border-2 border-[#D4AF37] rounded-xl p-8 max-w-sm text-center shadow-[0_0_50px_rgba(212,175,55,0.6)]">
+          <div className="bg-[#1A1A1A] border-2 border-[#D4AF37] rounded-xl p-8 max-w-sm text-center">
             <h3 className="text-2xl font-bold text-[#D4AF37] mb-4">
               Thank You!
             </h3>
-            <p className="text-white mb-6">May Allah reward you for your contribution.</p>
+
+            <p className="text-white mb-4">
+              May Allah reward you for your contribution.
+            </p>
+
+            {showOptionalNote && (
+              <p className="text-yellow-400 text-sm mb-4">
+                If you get details about missed fields, come back and fill.
+              </p>
+            )}
+
             <button
               onClick={handleSend}
-              className="bg-[#D4AF37] text-black py-2 px-6 rounded-lg font-semibold animate-pulse shadow-[0_0_20px_rgba(212,175,55,0.8)]"
+              className="bg-[#D4AF37] text-black py-2 px-6 rounded-lg font-semibold animate-pulse"
             >
               Send to WhatsApp
             </button>
+
+            <div className="mt-4">
+              <button
+                onClick={resetForm}
+                className="text-sm text-gray-400 underline"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

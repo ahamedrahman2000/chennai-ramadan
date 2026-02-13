@@ -2,7 +2,7 @@ import { Moon, Star } from "lucide-react";
 
 export default function MasjidMap() {
   return (
-    <div className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-20 overflow-hidden">
+    <section  className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-4 overflow-hidden">
 
    
 
@@ -41,6 +41,6 @@ export default function MasjidMap() {
         
 
       </div>
-    </div>
+    </section>
   );
 }

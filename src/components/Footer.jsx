@@ -133,7 +133,6 @@ export default function Footer() {
           <div className="mt-4">
             <a
               href={`https://api.whatsapp.com/send?text=Check%20out%20Chennai%20Ramadan%202026!%20Find%20Free%20Sehri%20locations%20and%20Prayer%20Times.%20If%20you%20know%20any%20area%20providing%20Sehri%20food,%20please%20add%20or%20update%20it%20here:%20https://www.chennairamadan.org`}
-
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-[#D4AF37] text-[#111111] font-semibold py-2 px-4 rounded hover:bg-yellow-400 transition"
@@ -184,6 +183,20 @@ export default function Footer() {
               <Mail size={18} />
             </a>
             <Star size={18} className="text-[#D4AF37]" />
+            <div className="mt-4 text-center">
+              <p className="text-sm text-gray-400 mb-2">Total Visitors</p>
+
+              <a
+                href="https://visitorbadge.io/status?path=https://www.chennairamadan.org"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fwww.chennairamadan.org&label=Visitors&labelColor=%23d4af37&countColor=%23555555&style=flat-square&labelStyle=upper"
+                  alt="Visitors"
+                />
+              </a>
+            </div>
           </div>
         </div>
       </div>

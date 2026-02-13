@@ -14,7 +14,7 @@ const features = [
   { title: "Find Sehri", icon: <MapPin size={28} />, path: "/find-sehri" },
   { title: "Prayer Times", icon: <Clock size={28} />, path: "/prayer-times" },
   {
-    title: "Masjid / Organization List",
+    title: "List",
     icon: <Star size={28} />,
     path: "/organization-list",
   },

@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { providers } from "../data/providers";
 import { Phone, MapPin, Clock, Star, Share2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function FindSehri() {
   const [search, setSearch] = useState("");
@@ -50,15 +51,28 @@ Additional Info: ${provider.additionalInfo || "N/A"}
       "_blank",
     );
   };
-
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-10 overflow-x-hidden">
-
       {/* Top info */}
-    <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
-  Missing Sehri locations or details? 
-  If you know any providing areas, please use the Register button on the Home page to add or update information and help the community.
-</div>
+      <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
+        <p>
+          Missing Sehri locations or details? If you know any Sehri providing
+          areas, please use the Register button on the Home page to add or
+          update information and help the community.
+        </p>
+
+        <p>
+          Kindly check the{" "}
+          <span
+            className="text-red-500 cursor-pointer underline"
+            onClick={() => navigate("/#map-section")}
+          >
+            map location
+          </span>{" "}
+          for updated locations. Old and new data are shown together.
+        </p>
+      </div>
 
       <h1 className="text-3xl font-bold text-center mb-6">
         Sehri Locations – Chennai
@@ -66,7 +80,6 @@ Additional Info: ${provider.additionalInfo || "N/A"}
 
       {/* FILTERS: Search + Area */}
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row gap-4 mb-10">
-
         <input
           type="text"
           placeholder="Search by name or area..."

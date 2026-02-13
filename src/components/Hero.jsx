@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import ProviderModal from "./ProviderModal";
-import { prayerTimes } from "../data/prayerTimes"; 
+import { prayerTimes } from "../data/prayerTimes";
 import { Link } from "react-router-dom";
 
 const RAMADAN_START = new Date("2026-02-19T00:00:00+05:30");
@@ -119,7 +119,7 @@ export default function Hero() {
 
   return (
     <>
-      <section className="min-h-screen relative flex items-center px-4 bg-[#1A1A1A] text-white overflow-hidden py-20">
+      <section className="min-h-screen relative flex items-center px-4 bg-[#1A1A1A] text-white overflow-hidden py-10">
         <div className="absolute top-24 right-10 text-5xl text-yellow-400 animate-pulse">
           🌙
         </div>
@@ -165,12 +165,18 @@ export default function Hero() {
             <p className="text-xl text-[#D4AF37] mb-6">⏳ {countdown}</p>
 
             <div className="text-center mt-4 text-[#E5E7EB] max-w-xl mx-auto">
-              We are updating Sehri locations in Chennai to help students,
-              hostelers, and employees. Kindly update your location info by
-              clicking below. May Allah reward your help! 
+              "Looking for free Sehri places in Chennai? Or are you providing
+              Sehri in your area?", "Register with us to help the community. May
+              Allah reward you!"
             </div>
 
             <div className="flex justify-center mt-6 gap-4">
+              <Link
+                to="/find-sehri"
+                className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold shadow-[0_0_20px_rgba(212,175,55,0.8)] hover:scale-105 transition"
+              >
+                Find Sehri
+              </Link>
               <Link
                 to="/register-sehri"
                 className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold shadow-[0_0_20px_rgba(212,175,55,0.8)] hover:scale-105 transition"
