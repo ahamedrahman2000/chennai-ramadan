@@ -32,9 +32,9 @@ export default function Navbar() {
     <nav className="bg-[#111111] border-b border-[#2A2A2A] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16 px-4">
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full " >
             {/* LEFT SIDE */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 md:space-x-3">
               {/* Hamburger */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -48,14 +48,14 @@ export default function Navbar() {
                 to="/"
                 className="flex items-center space-x-2 text-[#D4AF37] font-bold text-lg whitespace-nowrap"
               >
-                <span>Chennai Ramadan 🌙</span>
+                <span>ChennaiRamadan🌙</span>
               </Link>
             </div>
 
             {/* RIGHT SIDE */}
             <Link
               to="/find-sehri"
-              className="px-3 py-1 rounded md:hidden text-black font-bold text-sm whitespace-nowrap  bg-yellow-400 transition"
+              className="sm:px-2 px-3 py-1 rounded md:hidden text-black font-bold text-sm whitespace-nowrap  bg-yellow-400 transition"
             >
               Find Sehri
             </Link>

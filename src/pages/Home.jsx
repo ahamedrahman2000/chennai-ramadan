@@ -39,8 +39,9 @@ export default function Home() {
       <OuMission />
       <SehriStats />
       <Disclaimer />
-
-      <FeedbackForm />
+      <div id="feedback">
+        <FeedbackForm />
+      </div>
     </>
   );
 }

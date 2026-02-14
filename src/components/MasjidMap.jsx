@@ -35,15 +35,22 @@ export default function MasjidMap() {
           const userLng = position.coords.longitude;
 
           const sorted = providers
-            .map((provider) => ({
-              ...provider,
-              distance: calculateDistance(
+            .map((provider) => {
+              const distance = calculateDistance(
                 userLat,
                 userLng,
                 provider.lat,
-                provider.lng
-              ),
-            }))
+                provider.lng,
+              );
+
+              const walkingTime = Math.round((distance / 5) * 60); // 5 km/h walking
+
+              return {
+                ...provider,
+                distance,
+                walkingTime,
+              };
+            })
             .sort((a, b) => a.distance - b.distance)
             .slice(0, 5);
 
@@ -53,7 +60,7 @@ export default function MasjidMap() {
         () => {
           setLoading(false);
           alert("Location access denied. Cannot show nearby locations.");
-        }
+        },
       );
     } else {
       setLoading(false);
@@ -101,10 +108,21 @@ export default function MasjidMap() {
             >
               <p className="font-semibold">{item.name}</p>
               <p className="text-sm text-gray-400">
-                {item.area} • {item.distance.toFixed(2)} km away
+                {item.area} • {item.distance.toFixed(2)} km away (~
+                {item.walkingTime} min walk)
               </p>
             </div>
           ))}
+
+          {/* Feedback button */}
+          <div className="text-center mt-6">
+            <a
+              href="/#feedback"
+              className="bg-[#D4AF37] text-black py-2 px-4 rounded font-semibold hover:bg-yellow-400 transition"
+            >
+              Submit Feedback
+            </a>
+          </div>
         </div>
       )}
 
