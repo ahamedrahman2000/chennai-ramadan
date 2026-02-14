@@ -165,9 +165,9 @@ export default function Hero() {
             <p className="text-xl text-[#D4AF37] mb-6">⏳ {countdown}</p>
 
             <div className="text-center mt-4 text-[#E5E7EB] max-w-xl mx-auto">
-              "Looking for free Sehri places in Chennai? Or are you providing
-              Sehri in your area?", "Register with us to help the community. May
-              Allah reward you!"
+              Looking for free Sehri places in Chennai? Or are you providing
+              Sehri in your area?, Register with us to help the community. <span className="text-green-500">May
+              Allah reward you!</span>
             </div>
 
             <div className="flex justify-center mt-6 gap-4">

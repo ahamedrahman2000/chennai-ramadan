@@ -1,45 +1,123 @@
-import { Moon, Star } from "lucide-react";
+import { useState } from "react";
+import { providers } from "../data/providers";
 
 export default function MasjidMap() {
+  const [nearestProviders, setNearestProviders] = useState([]);
+  const [locationRequested, setLocationRequested] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Haversine formula to calculate distance in KM
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+  // Get user's current location when button is clicked
+  const getUserLocation = () => {
+    setLocationRequested(true);
+    setLoading(true);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+
+          const sorted = providers
+            .map((provider) => ({
+              ...provider,
+              distance: calculateDistance(
+                userLat,
+                userLng,
+                provider.lat,
+                provider.lng
+              ),
+            }))
+            .sort((a, b) => a.distance - b.distance)
+            .slice(0, 5);
+
+          setNearestProviders(sorted);
+          setLoading(false);
+        },
+        () => {
+          setLoading(false);
+          alert("Location access denied. Cannot show nearby locations.");
+        }
+      );
+    } else {
+      setLoading(false);
+      alert("Geolocation not supported by your browser.");
+    }
+  };
+
   return (
-    <section  className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-4 overflow-hidden">
+    <section className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-8">
+      <h2 className="text-4xl font-bold text-center text-[#D4AF37] mb-6">
+        Sehri Locations
+      </h2>
 
-   
+      {/* Button to request location */}
+      {!locationRequested && (
+        <div className="text-center mb-6">
+          <button
+            type="button"
+            onClick={getUserLocation}
+            className="bg-[#D4AF37] text-black font-semibold py-2 px-6 rounded hover:bg-yellow-400 transition"
+          >
+            Show Nearby Sehri Locations
+          </button>
+        </div>
+      )}
 
-      {/* Glowing Moon */}
-      <div className="absolute top-16 right-16 text-[#D4AF37] animate-pulse drop-shadow-[0_0_20px_rgba(212,175,55,0.9)]">
-        <Moon size={60} />
-      </div>
+      {/* Loading Indicator */}
+      {loading && (
+        <div className="text-center text-[#D4AF37] font-semibold mb-4">
+          Loading nearby locations...
+        </div>
+      )}
 
-      {/* Floating Stars */}
-      <Star className="absolute top-24 left-20 text-[#D4AF37] animate-ping opacity-70" size={20} />
-      <Star className="absolute top-40 right-1/3 text-[#D4AF37] animate-pulse opacity-60" size={18} />
-      <Star className="absolute bottom-32 left-1/4 text-[#D4AF37] animate-ping opacity-50" size={16} />
+      {/* Nearby Locations */}
+      {nearestProviders.length > 0 && (
+        <div className="max-w-4xl mx-auto mb-10 bg-[#222] p-6 rounded-xl border border-[#333]">
+          <h3 className="text-[#D4AF37] text-xl font-bold mb-4">
+            📍 Nearby Sehri Locations
+          </h3>
 
-      <div className="max-w-6xl mx-auto relative z-10">
+          {nearestProviders.map((item) => (
+            <div
+              key={item.id}
+              className="border-b border-[#333] py-3 last:border-none"
+            >
+              <p className="font-semibold">{item.name}</p>
+              <p className="text-sm text-gray-400">
+                {item.area} • {item.distance.toFixed(2)} km away
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
 
-        {/* Title */}
-        <h2 className="text-4xl font-bold text-center text-[#D4AF37] mb-4">
-          Sehri Locations
-        </h2>
-
-        <p className="text-center text-[#A1A1AA] mb-10">
-          Explore Masjids and Organizations across Chennai offering Sehri and Iftar support.
-        </p>
-
-        {/* Map Card */}
-        
-          <iframe
-            src="https://www.google.com/maps/d/embed?mid=1w8sJbVcvXSBCEs8HrDN9_Mfy7iv5fEw"
-            width="100%"
-            height="500"
-            className="rounded-xl border border-[#333333]"
-            loading="lazy"
-             title="Masjid Location Map"
-          />
-
-        
-
+      {/* Google My Map */}
+      <div className="max-w-6xl mx-auto">
+        <iframe
+          src="https://www.google.com/maps/d/embed?mid=1w8sJbVcvXSBCEs8HrDN9_Mfy7iv5fEw"
+          width="100%"
+          height="500"
+          className="rounded-xl border border-[#333]"
+          loading="lazy"
+          title="Masjid Location Map"
+        />
       </div>
     </section>
   );

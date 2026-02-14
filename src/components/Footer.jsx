@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Moon, Star, Clock, Mail } from "lucide-react";
+import { Moon, Star, Clock, Mail, Instagram } from "lucide-react";
 
 const RAMADAN_START = new Date("2026-02-19T00:00:00");
 const RAMADAN_TOTAL_DAYS = 30;
@@ -174,16 +174,34 @@ export default function Footer() {
             </p>
           )}
 
-          {/* Social */}
-          <div className="flex items-center gap-4 mt-4">
-            <a
-              href="mailto:contact@ramadanchennai.in"
-              className="hover:text-[#D4AF37]"
-            >
-              <Mail size={18} />
-            </a>
-            <Star size={18} className="text-[#D4AF37]" />
-            <div className="mt-4 text-center">
+          {/* Social + Visitors */}
+          <div className="mt-4">
+            {/* Icons Row */}
+            <div className="flex items-center gap-4">
+              {/* Email */}
+              <a
+                href="mailto:contact@ramadanchennai.in"
+                className="hover:text-[#D4AF37] transition"
+              >
+                <Mail size={18} />
+              </a>
+
+              {/* Instagram */}
+              <a
+                href="https://www.instagram.com/chennairamadan2026"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#D4AF37] transition"
+              >
+                <Instagram size={18} />
+              </a>
+
+              {/* Star */}
+              <Star size={18} className="text-[#D4AF37]" />
+            </div>
+
+            {/* Visitor Counter */}
+            <div className="mt-4">
               <p className="text-sm text-gray-400 mb-2">Total Visitors</p>
 
               <a

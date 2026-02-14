@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Home,
-  Clock,
-  MapPin,
   BookOpen,
   Book,
   MessageCircle,
@@ -11,31 +9,55 @@ import {
   X,
   User,
   AlertTriangle,
+  Pen,
+  MapPin,
 } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup when component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
 
   return (
     <nav className="bg-[#111111] border-b border-[#2A2A2A] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16 px-4">
-          {/* Left side: Mobile Hamburger + Logo */}
-          <div className="flex items-center space-x-3">
-            {/* Hamburger only on mobile */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-[#D4AF37]"
-            >
-              {isOpen ? <X size={26} /> : <Menu size={26} />}
-            </button>
+          <div className="flex items-center justify-between w-full">
+            {/* LEFT SIDE */}
+            <div className="flex items-center space-x-3">
+              {/* Hamburger */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden text-[#D4AF37]"
+              >
+                {isOpen ? <X size={26} /> : <Menu size={26} />}
+              </button>
 
-            {/* Logo */}
+              {/* Logo */}
+              <Link
+                to="/"
+                className="flex items-center space-x-2 text-[#D4AF37] font-bold text-lg whitespace-nowrap"
+              >
+                <span>Chennai Ramadan 🌙</span>
+              </Link>
+            </div>
+
+            {/* RIGHT SIDE */}
             <Link
-              to="/"
-              className="flex items-center space-x-2 text-[#D4AF37] font-bold text-lg whitespace-nowrap"
+              to="/find-sehri"
+              className="px-3 py-1 rounded md:hidden text-black font-bold text-sm whitespace-nowrap  bg-yellow-400 transition"
             >
-              <span>🌙 Chennai Ramadan</span>
+              Find Sehri
             </Link>
           </div>
 
@@ -66,7 +88,7 @@ export default function Navbar() {
               to="/organization-list"
               className="hover:text-[#FFD700] transition"
             >
-              Masjid | Organization List
+              Organization List
             </Link>
             <Link
               to="/ask-scholar"
@@ -132,19 +154,26 @@ export default function Navbar() {
               <Home size={18} /> Home
             </Link>
             <Link
-              to="/find-sehri"
+              to="/sehri-locations"
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
             >
-              <Clock size={18} /> Find Sehri
+              <MapPin size={18} /> Sehri Locations
             </Link>
             <Link
+              to="/register-sehri"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
+            >
+              <Pen size={18} /> Register Sehri
+            </Link>
+            {/* <Link
               to="/organization-list"
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
             >
               <MapPin size={18} /> Providers List
-            </Link>
+            </Link> */}
             <Link
               to="/prayer-times"
               onClick={() => setIsOpen(false)}

@@ -1,14 +1,11 @@
-import { HandHeart, Moon  } from "lucide-react";
+import {  Moon  } from "lucide-react";
 import { prayerTimes } from "../data/prayerTimes";
 
 export default function MissionSection() {
   return (
     <section className="py-24 px-6 bg-[#1A1A1A] text-[#E5E7EB]">
       <div className="max-w-7xl mx-auto grid md:grid-cols-1 gap-16">
-
-        {/* =======================
-            SEHRI / IFTAR TABLE
-        ======================== */}
+ 
         <div className="bg-[#222222] p-6 rounded-2xl border border-[#2A2A2A] shadow-lg">
           <div className="flex items-center justify-center gap-2 text-[#D4AF37] mb-4">
             <Moon size={20} />
@@ -50,33 +47,7 @@ export default function MissionSection() {
             </table>
           </div>
         </div>
-
-        {/* =======================
-            MISSION
-        ======================== */}
-        <div>
-          <div className="flex items-center gap-3 text-[#D4AF37] mb-4">
-            <HandHeart size={24} />
-            <h2 className="text-3xl font-bold">Our Mission & Purpose</h2>
-          </div>
-
-          <p className="text-[#A1A1AA] leading-relaxed text-lg mb-6">
-            Ramadan is a month of compassion, unity, and generosity.
-            While Iftar is often communal, Sehri can be challenging for
-            students, workers, travelers, and hostel residents across Chennai.
-          </p>
-
-          <p className="text-[#A1A1AA] leading-relaxed text-lg mb-6">
-            Our mission is to connect seekers with Masjids, organizations,
-            and food providers offering Sehri & Iftar — ensuring no one
-            begins their fast alone or without food.
-          </p>
-        </div>
-
-        {/* =======================
-            HOW YOU CAN HELP
-        ======================== */}
-       
+ 
       </div>
     </section>
   );

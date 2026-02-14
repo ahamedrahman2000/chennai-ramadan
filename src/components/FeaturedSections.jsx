@@ -27,7 +27,7 @@ export default function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Title */}
         <h2 className="text-3xl font-bold text-center text-[#D4AF37] mb-10">
-          Explore Features of Chennai Ramadan App
+            Features of Our App
         </h2>
 
         {/* Feature Cards */}

@@ -6,6 +6,7 @@ import { HelpSection } from "../components/HelpSection";
 import Hero from "../components/Hero";
 import MasjidMap from "../components/MasjidMap";
 import MissionSection from "../components/MissionSection";
+import OuMission from "../components/OurMission";
 import RamadanPopup from "../components/RamadanPopup";
 import SehriStats from "../components/SehriStats";
 import { useEffect } from "react";
@@ -33,8 +34,9 @@ export default function Home() {
       </div>
       <HelpSection />
       <AboutUs />
-      <FeaturesSection />
       <MissionSection />
+      <FeaturesSection />
+      <OuMission />
       <SehriStats />
       <Disclaimer />
 

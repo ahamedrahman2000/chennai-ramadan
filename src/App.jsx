@@ -17,6 +17,7 @@ import DuasPage from "./components/Duas";
 import ComingSoon from "./components/ComingSoon";
 import ScrollToTop from "./components/ScrollToTop";
 import { HelpSection } from "./components/HelpSection";
+import MasjidMap from "./components/MasjidMap";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/dua" element={<DuasPage />} />
           <Route path="/coming-soon" element={<ComingSoon />} />
           <Route path="/help" element={<HelpSection />} />
+          <Route path="/sehri-locations" element={<MasjidMap />} />
           <Route
             path="/ramadan-sehri-chennai-2026"
             element={<RamadanChennaiSEO />}

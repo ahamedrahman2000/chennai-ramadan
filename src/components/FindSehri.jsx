@@ -47,7 +47,7 @@ Serving Time: ${provider.foodTime || "N/A"}
 Additional Info: ${provider.additionalInfo || "N/A"}
   `;
     window.open(
-      `https://wa.me/919884680243?text=${encodeURIComponent(message)}`,
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`,
       "_blank",
     );
   };
@@ -57,20 +57,22 @@ Additional Info: ${provider.additionalInfo || "N/A"}
       {/* Top info */}
       <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
         <p>
-          Missing Sehri locations or details? If you know any Sehri providing
-          areas, please use the Register button on the Home page to add or
-          update information and help the community.
+          <span className=" font-bold    ">Missing Sehri locations?</span> If
+          you know any Sehri providing areas, please use the{" "}
+          <span className="text-green-500 cursor-pointer "  onClick={() => navigate("/register-sehri") }>Register</span> to
+          add or <span className="text-green-500 cursor-pointer ">update</span>{" "}
+          details and support the community.
         </p>
 
         <p>
-          Kindly check the{" "}
+          Kindly click a{" "}
           <span
-            className="text-red-500 cursor-pointer underline"
+            className="text-red-500 font-bold cursor-pointer underline"
             onClick={() => navigate("/#map-section")}
           >
-            map location
+            Sehri location
           </span>{" "}
-          for updated locations. Old and new data are shown together.
+          to view updated information.
         </p>
       </div>
 
