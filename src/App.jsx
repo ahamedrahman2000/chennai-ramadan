@@ -17,7 +17,7 @@ import DuasPage from "./components/Duas";
 import ComingSoon from "./components/ComingSoon";
 import ScrollToTop from "./components/ScrollToTop";
 import { HelpSection } from "./components/HelpSection";
-import MasjidMap from "./components/MasjidMap";
+import MasjidMap from "./components/MasjidMap"; 
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/find-sehri" element={<FindSehri />} />
+          <Route path="/find-sehri" element={<FindSehri />} /> 
           <Route path="/prayer-times" element={<PrayerTimes />} />
           <Route path="/providers" element={<ProviderCard />} />
           <Route path="/disclaimer" element={<Disclaimer />} />

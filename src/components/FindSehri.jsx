@@ -1,11 +1,33 @@
-import { useState, useMemo } from "react";
-import { providers } from "../data/providers";
+import { useState, useEffect, useMemo } from "react";
 import { Phone, MapPin, Clock, Star, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function FindSehri() {
   const [search, setSearch] = useState("");
   const [areaFilter, setAreaFilter] = useState("All");
+  const [providers, setProviders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+  // Fetch providers from backend API
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const response = await fetch(
+          "https://ramadan-sehri-backend.onrender.com/api/providers",
+        );
+        // Replace with live backend URL when deployed
+        const data = await response.json();
+        setProviders(data);
+      } catch (err) {
+        console.error("Failed to fetch providers:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProviders();
+  }, []);
 
   // Remove duplicates based on name + area
   const uniqueProviders = useMemo(() => {
@@ -15,7 +37,7 @@ export default function FindSehri() {
       if (!map.has(key)) map.set(key, p);
     });
     return Array.from(map.values());
-  }, []);
+  }, [providers]);
 
   const uniqueAreas = [
     "All",
@@ -34,6 +56,7 @@ export default function FindSehri() {
       })
       .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
   }, [search, areaFilter, uniqueProviders]);
+
   const handleShare = (provider) => {
     const message = `
 Sehri Location Details:
@@ -45,25 +68,39 @@ Sehri Type: ${provider.sehriType || "N/A"}
 Service: ${provider.serviceType || "N/A"}
 Serving Time: ${provider.foodTime || "N/A"}
 Additional Info: ${provider.additionalInfo || "N/A"}
-  `;
+    `;
     window.open(
       `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`,
       "_blank",
     );
   };
-  const navigate = useNavigate();
+
+  // Show loading state
+  if (loading) {
+    return (
+      <p className="text-center mt-10 text-lg text-yellow-500">
+        Loading Sehri locations...
+      </p>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-10 overflow-x-hidden">
       {/* Top info */}
       <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
         <p>
-          <span className=" font-bold    ">Missing Sehri locations?</span> If
-          you know any Sehri providing areas, please use the{" "}
-          <span className="text-green-500 cursor-pointer "  onClick={() => navigate("/register-sehri") }>Register</span> to
-          add or <span className="text-green-500 cursor-pointer ">update</span>{" "}
-          details and support the community.
+          <span className=" font-bold">Missing Sehri locations?</span> If you
+          know any Sehri providing areas, please use the{" "}
+          <span
+            className="text-green-500 cursor-pointer"
+            onClick={() => navigate("/register-sehri")}
+          >
+            Register
+          </span>{" "}
+          to add or{" "}
+          <span className="text-green-500 cursor-pointer">update</span> details
+          and support the community.
         </p>
-
         <p>
           Kindly click a{" "}
           <span
@@ -102,6 +139,11 @@ Additional Info: ${provider.additionalInfo || "N/A"}
 
       {/* CARDS */}
       <div className="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {filtered.length === 0 && (
+          <p className="text-center text-red-500 mt-10 text-lg">
+            No providers found.
+          </p>
+        )}
         {filtered.map((provider) => (
           <div
             key={provider.name + provider.area}
@@ -131,7 +173,9 @@ Additional Info: ${provider.additionalInfo || "N/A"}
 
               {/* Area */}
               <div
-                className={`flex items-center gap-2 mt-3 ${!provider.area ? "text-red-500" : "text-[#A1A1AA]"}`}
+                className={`flex items-center gap-2 mt-3 ${
+                  !provider.area ? "text-red-500" : "text-[#A1A1AA]"
+                }`}
               >
                 <MapPin size={16} />
                 {provider.area || "Area missing"}
@@ -139,7 +183,9 @@ Additional Info: ${provider.additionalInfo || "N/A"}
 
               {/* Full Address */}
               <p
-                className={`text-sm mt-1 ${!provider.address ? "text-red-500" : "text-[#A1A1AA]"}`}
+                className={`text-sm mt-1 ${
+                  !provider.address ? "text-red-500" : "text-[#A1A1AA]"
+                }`}
               >
                 {provider.address || "Address missing"}
               </p>
@@ -174,6 +220,7 @@ Additional Info: ${provider.additionalInfo || "N/A"}
                   </a>
                 </div>
               ) : null}
+
               {/* Additional Info */}
               {provider.additionalInfo && (
                 <p className="text-sm mt-3 text-[#A1A1AA]">
@@ -194,13 +241,6 @@ Additional Info: ${provider.additionalInfo || "N/A"}
           </div>
         ))}
       </div>
-
-      {/* No results */}
-      {filtered.length === 0 && (
-        <p className="text-center text-red-500 mt-10 text-lg">
-          No providers found.
-        </p>
-      )}
     </div>
   );
 }
