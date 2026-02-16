@@ -1,10 +1,8 @@
 import {
-  Book,
-  Scroll,
+  Book, 
   MapPin,
   Clock,
-  Star,
-  FileQuestion,
+  Star, 
   CircleQuestionMark, 
 } from "lucide-react";
 import { Link } from "react-router-dom";

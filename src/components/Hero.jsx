@@ -6,8 +6,7 @@ const RAMADAN_START = new Date("2026-02-19T00:00:00+05:30");
 const HIJRI_YEAR = 1447;
 const SHABAN_TOTAL_DAYS = 29;
 
-export default function Hero() {
-  const [open, setOpen] = useState(false);
+export default function Hero() { 
   const [ramadanDay, setRamadanDay] = useState(null);
   const [hijriDate, setHijriDate] = useState("");
   const [countdown, setCountdown] = useState("");

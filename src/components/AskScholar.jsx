@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Star } from "lucide-react";
+import { X } from "lucide-react";
 
 export default function AskScholar() {
   const [formData, setFormData] = useState({
