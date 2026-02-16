@@ -5,7 +5,7 @@ import { Moon, Star, Clock, Mail, Instagram } from "lucide-react";
 const RAMADAN_START = new Date("2026-02-19T00:00:00");
 const RAMADAN_TOTAL_DAYS = 30;
 
-export default function Footer() {
+export default function Footer({ visitorCount }) {
   const [time, setTime] = useState("");
   const [ramadanProgress, setRamadanProgress] = useState(null);
 
@@ -60,12 +60,16 @@ export default function Footer() {
             A community initiative connecting Chennai for Sehri & Iftar during
             the blessed month of Ramadan.
           </p>
-
-          <p className="text-2xl text-[#D4AF37] font-semibold">رمضان كريم</p>
+          <div className="flex gap-8 items-center">
+            <p className="text-2xl text-[#D4AF37] font-semibold">رمضان كريم</p>
+            <p className="text-[#D4AF37] text-sm font-semibold">
+              {visitorCount} Hearts Connected ❤️
+            </p>
+          </div>
         </div>
 
         {/* Quick Links */}
-        <div className="md:flex gap-10">
+        <div className="grid grid-cols-2 gap-6">
           {/* General Links */}
           <div className="mb-6">
             <h3 className="text-[#D4AF37] font-semibold mb-2">General</h3>
@@ -115,16 +119,6 @@ export default function Footer() {
               <li>
                 <Link to="/dua" className="hover:text-[#D4AF37]">
                   Duas
-                </Link>
-              </li>
-              <li>
-                <Link to="/coming-soon" className="hover:text-[#D4AF37]">
-                  Hadith
-                </Link>
-              </li>
-              <li>
-                <Link to="/coming-soon" className="hover:text-[#D4AF37]">
-                  Quran
                 </Link>
               </li>
             </ul>

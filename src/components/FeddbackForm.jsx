@@ -47,7 +47,8 @@ export default function FeedbackForm() {
   };
 
   return (
-    <div className="flex justify-center  mt-12">
+    <div className="flex justify-center mt-12 px-2">
+      {/* Feedback Button */}
       <button
         onClick={() => setOpen(true)}
         className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold animate-pulse shadow-[0_0_30px_rgba(212,175,55,1)]"
@@ -55,74 +56,70 @@ export default function FeedbackForm() {
         Give Feedback
       </button>
 
+      {/* Modal */}
       {open && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-auto p-4">
-          <div className="bg-[#1A1A1A] text-white p-6 rounded-lg w-full max-w-4xl overflow-y-auto max-h-[90vh] relative flex flex-col md:flex-row gap-6">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 overflow-auto p-4">
+          <div className="bg-[#1A1A1A] text-white w-full max-w-lg rounded-2xl p-6 relative overflow-y-auto max-h-[90vh] flex flex-col gap-6">
+            
             {/* Close Button */}
             <button
               onClick={() => setOpen(false)}
-              className="absolute top-4 right-4 text-[#D4AF37] font-bold text-xl"
+              className="absolute top-4 right-4 text-[#D4AF37] font-bold text-2xl"
             >
               ✕
             </button>
 
-            {/* Left Side: Form */}
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-3 text-[#D4AF37]">
+            {/* Form */}
+            <div>
+              <h2 className="text-2xl font-bold mb-4 text-[#D4AF37] text-center">
                 Feedback Form
               </h2>
-              <p className="mb-6 text-[#A1A1AA]">
-                We value your feedback! Please fill out the form below.
+              <p className="mb-6 text-[#A1A1AA] text-center text-sm sm:text-base">
+                We value your feedback! Kindly fill the form below.
               </p>
 
-              {/* Name */}
-              <label className="block mb-2 font-semibold">Name *</label>
+              <label className="block mb-2 font-semibold text-sm">Name *</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Your name"
-                className="w-full p-3 mb-4 rounded bg-[#2A2A2A] placeholder-gray-400"
+                className="w-full p-3 mb-4 rounded bg-[#2A2A2A] placeholder-gray-400 text-sm"
               />
 
-              {/* Email */}
-              <label className="block mb-2 font-semibold">Email (Optional)</label>
+              <label className="block mb-2 font-semibold text-sm">Email (Optional)</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Your email"
-                className="w-full p-3 mb-4 rounded bg-[#2A2A2A] placeholder-gray-400"
+                className="w-full p-3 mb-4 rounded bg-[#2A2A2A] placeholder-gray-400 text-sm"
               />
 
-              {/* Message */}
-              <label className="block mb-2 font-semibold">Message *</label>
+              <label className="block mb-2 font-semibold text-sm">Message *</label>
               <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
                 placeholder="Your feedback..."
-                className="w-full p-3 mb-6 rounded bg-[#2A2A2A] placeholder-gray-400"
                 rows={4}
+                className="w-full p-3 mb-4 rounded bg-[#2A2A2A] placeholder-gray-400 text-sm"
               />
 
-              {/* Submit */}
               <button
                 onClick={handleSend}
-                className="w-full bg-[#D4AF37] text-black py-3 rounded-lg font-semibold animate-pulse shadow-[0_0_30px_rgba(212,175,55,1)]"
+                className="w-full bg-[#D4AF37] text-black py-3 rounded-lg font-semibold animate-pulse shadow-[0_0_25px_rgba(212,175,55,1)] text-sm sm:text-base"
               >
                 Send to WhatsApp
               </button>
             </div>
 
-            {/* Right Side: Message */}
-            <div className="flex-1 bg-[#2A2A2A] p-4 rounded-lg border border-[#D4AF37] text-[#FFD700] flex items-center justify-center">
-              <p className="text-lg md:text-xl font-semibold text-center">
-                Sorry for the inconvenience for wrong location and details. <br />
-                We are improving by using Sehri or newly registered people help.
-              </p>
+            {/* Info Message */}
+            <div className="bg-[#2A2A2A] p-4 rounded-lg border border-[#D4AF37] text-[#FFD700] text-center text-sm sm:text-base">
+              Sorry for any inconvenience due to wrong locations or details. <br />
+              Your feedback helps us improve with Sehri & newly registered providers.
             </div>
           </div>
         </div>

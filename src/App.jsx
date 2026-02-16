@@ -13,13 +13,26 @@ import RegistrationPage from "./components/RegisterSehri";
 import SehriTicker from "./components/SehriTicker";
 import AskScholar from "./components/AskScholar";
 import { AboutUs } from "./components/AboutUs";
-import DuasPage from "./components/Duas";
 import ComingSoon from "./components/ComingSoon";
 import ScrollToTop from "./components/ScrollToTop";
 import { HelpSection } from "./components/HelpSection";
-import MasjidMap from "./components/MasjidMap"; 
-
+import MasjidMap from "./components/MasjidMap";
+import MasjidMap2 from "./components/MasjidMap2";
+import DuaPage from "./components/Duas";
+import { useEffect, useState } from "react";
 function App() {
+  const [visitorCount, setVisitorCount] = useState(0);
+  useEffect(() => {
+    // Register visit
+    fetch("https://ramadan-sehri-backend.onrender.com/api/visit", {
+      method: "POST",
+    });
+
+    // Get total count
+    fetch("https://ramadan-sehri-backend.onrender.com/api/visitor-count")
+      .then((res) => res.json())
+      .then((data) => setVisitorCount(data.total));
+  }, []);
   return (
     <div className="flex flex-col min-h-screen bg-[#1A1A1A] text-[#E5E7EB]">
       <Navbar />
@@ -28,7 +41,7 @@ function App() {
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/find-sehri" element={<FindSehri />} /> 
+          <Route path="/find-sehri" element={<FindSehri />} />
           <Route path="/prayer-times" element={<PrayerTimes />} />
           <Route path="/providers" element={<ProviderCard />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
@@ -37,10 +50,11 @@ function App() {
           <Route path="/register-sehri" element={<RegistrationPage />} />
           <Route path="/ask-scholar" element={<AskScholar />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/dua" element={<DuasPage />} />
+          <Route path="/dua" element={<DuaPage />} />
           <Route path="/coming-soon" element={<ComingSoon />} />
           <Route path="/help" element={<HelpSection />} />
           <Route path="/sehri-locations" element={<MasjidMap />} />
+          <Route path="/sehri-locations2" element={<MasjidMap2 />} />
           <Route
             path="/ramadan-sehri-chennai-2026"
             element={<RamadanChennaiSEO />}
@@ -48,7 +62,7 @@ function App() {
         </Routes>
       </div>
 
-      <Footer />
+      <Footer visitorCount={visitorCount} />
     </div>
   );
 }

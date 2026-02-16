@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import ProviderModal from "./ProviderModal";
 import { prayerTimes } from "../data/prayerTimes";
 import { Link } from "react-router-dom";
 
@@ -119,32 +118,41 @@ export default function Hero() {
 
   return (
     <>
-      <section className="min-h-screen relative flex items-center px-4 bg-[#1A1A1A] text-white overflow-hidden py-10">
-        <div className="absolute top-24 right-10 text-5xl text-yellow-400 animate-pulse">
+     <section className="relative flex items-center px-4 bg-[#1A1A1A] text-white overflow-hidden pt-6 pb-10">
+        {/* Moon Emoji */}
+        <div className="absolute top-12 right-8 text-4xl sm:text-5xl text-yellow-400 animate-pulse">
           🌙
         </div>
 
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 text-center relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-center md:text-left relative z-10">
           <div>
-            <h1 className="text-4xl font-bold mb-4">Ramadan 2026</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4">
+              Ramadan 2026
+            </h1>
 
-            <h2 className="text-3xl text-[#D4AF37] mb-4">رمضان كريم</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-3xl text-[#D4AF37] mb-2 sm:mb-4">
+              رمضان كريم
+            </h2>
 
-            <p className="mb-2 text-[#D4AF37]">{hijriDate}</p>
+            <p className="mb-1 sm:mb-2 text-[#D4AF37] text-sm sm:text-base">
+              {hijriDate}
+            </p>
 
             {ramadanDay ? (
-              <p className="mb-4">🌙 Ramadan Day {ramadanDay}</p>
+              <p className="mb-2 sm:mb-4 text-sm sm:text-base">
+                🌙 Ramadan Day {ramadanDay}
+              </p>
             ) : (
-              <p className="mb-4 text-yellow-400">
+              <p className="mb-2 sm:mb-4 text-yellow-400 text-sm sm:text-base">
                 Ramadan starts in {daysToRamadan} days
               </p>
             )}
 
             {ramadanDay && (
-              <div className="flex justify-center gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-2 sm:gap-4 mb-4">
                 <button
                   onClick={() => setMode("sehar")}
-                  className={`px-4 py-2 rounded ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base ${
                     mode === "sehar" ? "bg-[#D4AF37] text-black" : "bg-gray-700"
                   }`}
                 >
@@ -153,7 +161,7 @@ export default function Hero() {
 
                 <button
                   onClick={() => setMode("iftar")}
-                  className={`px-4 py-2 rounded ${
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base ${
                     mode === "iftar" ? "bg-[#D4AF37] text-black" : "bg-gray-700"
                   }`}
                 >
@@ -162,37 +170,39 @@ export default function Hero() {
               </div>
             )}
 
-            <p className="text-xl text-[#D4AF37] mb-6">⏳ {countdown}</p>
+            <p className="text-sm sm:text-base text-[#D4AF37] mb-4 sm:mb-6">
+              ⏳ {countdown}
+            </p>
 
-            <div className="text-center mt-4 text-[#E5E7EB] max-w-xl mx-auto">
+            <div className="text-center md:text-left mt-2 sm:mt-4 text-[#E5E7EB] text-sm sm:text-base max-w-md sm:max-w-xl mx-auto md:mx-0">
               Looking for free Sehri places in Chennai? Or are you providing
-              Sehri in your area?, Register with us to help the community. <span className="text-green-500">May
-              Allah reward you!</span>
+              Sehri in your area? Register with us to help the community.{" "}
+              <span className="text-green-500">May Allah reward you!</span>
             </div>
 
-            <div className="flex justify-center mt-6 gap-4">
+            <div className="flex flex-row sm:flex-row justify-center md:justify-start mt-4 sm:mt-6 gap-3 sm:gap-4">
               <Link
                 to="/find-sehri"
-                className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold shadow-[0_0_20px_rgba(212,175,55,0.8)] hover:scale-105 transition"
+                className="bg-[#D4AF37] text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base shadow-[0_0_15px_rgba(212,175,55,0.6)] hover:scale-105 transition"
               >
                 Find Sehri
               </Link>
               <Link
                 to="/register-sehri"
-                className="bg-[#D4AF37] text-black px-6 py-3 rounded-lg font-semibold shadow-[0_0_20px_rgba(212,175,55,0.8)] hover:scale-105 transition"
+                className="bg-[#D4AF37] text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base shadow-[0_0_15px_rgba(212,175,55,0.6)] hover:scale-105 transition"
               >
                 Register Now
               </Link>
             </div>
           </div>
 
-          <div className="bg-[#222222] p-8 rounded-2xl shadow-xl min-h-[300px] flex flex-col justify-center">
+          <div className="bg-[#222222] p-6 sm:p-8 rounded-2xl shadow-xl min-h-[250px] sm:min-h-[300px] flex flex-col justify-center">
             {ramadanDay && (
-              <div className="grid gap-4">
+              <div className="grid gap-3 sm:gap-4">
                 {upcoming.map((day, i) => (
                   <div
                     key={i}
-                    className={`p-4 rounded-xl flex justify-between ${
+                    className={`p-3 sm:p-4 rounded-xl flex justify-between text-sm sm:text-base ${
                       i === 0
                         ? "bg-[#D4AF37] text-black scale-105"
                         : "bg-[#2A2A2A]"
@@ -209,8 +219,6 @@ export default function Hero() {
           </div>
         </div>
       </section>
-
-      <ProviderModal isOpen={open} onClose={() => setOpen(false)} />
     </>
   );
 }

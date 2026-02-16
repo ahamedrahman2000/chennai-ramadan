@@ -757,7 +757,7 @@ export const providers = [
   },
   {
     id: 51,
-    name: "Fi Sabililah Welfare Trust",
+    name: "Fee Sabililah Welfare Trust",
     serviceType: "Dine In",
     sehriType: "Free",
     area: "Thiruvallur",

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import {
   Home,
   BookOpen,
-  Book,
   MessageCircle,
   Menu,
   X,
@@ -31,35 +30,32 @@ export default function Navbar() {
   return (
     <nav className="bg-[#111111] border-b border-[#2A2A2A] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16 px-4">
-          <div className="flex items-center justify-between w-full " >
-            {/* LEFT SIDE */}
-            <div className="flex items-center space-x-2 md:space-x-3">
-              {/* Hamburger */}
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden text-[#D4AF37]"
-              >
-                {isOpen ? <X size={26} /> : <Menu size={26} />}
-              </button>
-
-              {/* Logo */}
-              <Link
-                to="/"
-                className="flex items-center space-x-2 text-[#D4AF37] font-bold text-lg whitespace-nowrap"
-              >
-                <span>ChennaiRamadan🌙</span>
-              </Link>
-            </div>
-
-            {/* RIGHT SIDE */}
-            <Link
-              to="/find-sehri"
-              className="sm:px-2 px-3 py-1 rounded md:hidden text-black font-bold text-sm whitespace-nowrap  bg-yellow-400 transition"
+        <div className="flex justify-between items-center h-16">
+          {/* LEFT SIDE */}
+          <div className="flex items-center space-x-2 md:space-x-3">
+            {/* Hamburger */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden text-[#D4AF37]"
             >
-              Find Sehri
+              {isOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
+            {/* Logo */}
+            <Link
+              to="/"
+              className="flex items-center space-x-2 text-yellow-400 font-bold text-lg whitespace-nowrap"
+            >
+              <span>ChennaiRamadan🌙</span>
             </Link>
           </div>
+
+          {/* RIGHT SIDE */}
+          <Link
+            to="/find-sehri"
+            className="sm:px-2 px-3 py-1 rounded md:hidden text-black font-bold text-sm whitespace-nowrap   bg-[#D4AF37]  hover:bg-yellow-400 transition"
+          >
+            Find Sehri
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6 text-sm text-[#E5E7EB]">
@@ -68,12 +64,6 @@ export default function Navbar() {
             </Link>
             <Link to="/dua" className="hover:text-[#FFD700] transition">
               Duas
-            </Link>
-            <Link to="/coming-soon" className="hover:text-[#FFD700] transition">
-              Hadith
-            </Link>
-            <Link to="/coming-soon" className="hover:text-[#FFD700] transition">
-              Quran
             </Link>
             <Link to="/find-sehri" className="hover:text-[#FFD700] transition">
               Find Sehri
@@ -154,7 +144,7 @@ export default function Navbar() {
               <Home size={18} /> Home
             </Link>
             <Link
-              to="/sehri-locations"
+              to="/sehri-locations2"
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
             >
@@ -167,13 +157,13 @@ export default function Navbar() {
             >
               <Pen size={18} /> Register Sehri
             </Link>
-            {/* <Link
+            <Link
               to="/organization-list"
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
             >
               <MapPin size={18} /> Providers List
-            </Link> */}
+            </Link>
             <Link
               to="/prayer-times"
               onClick={() => setIsOpen(false)}
@@ -188,21 +178,6 @@ export default function Navbar() {
             >
               <MessageCircle size={18} /> Duas
             </Link>
-            <Link
-              to="/coming-soon"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
-            >
-              <Book size={18} /> Hadith
-            </Link>
-            <Link
-              to="/coming-soon"
-              onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
-            >
-              <BookOpen size={18} /> Quran
-            </Link>
-
             <Link
               to="/ask-scholar"
               onClick={() => setIsOpen(false)}

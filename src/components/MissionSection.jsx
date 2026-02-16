@@ -3,7 +3,7 @@ import { prayerTimes } from "../data/prayerTimes";
 
 export default function MissionSection() {
   return (
-    <section className="py-24 px-6 bg-[#1A1A1A] text-[#E5E7EB]">
+    <section className=" py-10 px-6 bg-[#1A1A1A] text-[#E5E7EB]">
       <div className="max-w-7xl mx-auto grid md:grid-cols-1 gap-16">
  
         <div className="bg-[#222222] p-6 rounded-2xl border border-[#2A2A2A] shadow-lg">

@@ -1,14 +1,23 @@
 export default function Disclaimer() {
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-6 py-20">
-      <div className="max-w-4xl mx-auto bg-[#222222] p-10 rounded-2xl shadow-xl">
+    <div className="bg-[#1A1A1A] text-[#E5E7EB] px-4 py-10 sm:py-14 md:py-20">
+      <div className="max-w-4xl mx-auto bg-[#222222] 
+                      p-5 sm:p-7 md:p-10 
+                      rounded-xl sm:rounded-2xl 
+                      shadow-xl">
 
         {/* Centered Title */}
-        <h1 className="text-4xl font-bold text-[#D4AF37] mb-10 text-center">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl 
+                       font-bold text-[#D4AF37] 
+                       mb-6 sm:mb-8 md:mb-10 
+                       text-center">
           Disclaimer
         </h1>
 
-        <div className="space-y-6 text-[#A1A1AA] leading-relaxed text-sm md:text-base">
+        <div className="space-y-4 sm:space-y-5 md:space-y-6 
+                        text-[#A1A1AA] 
+                        leading-relaxed 
+                        text-xs sm:text-sm md:text-base">
 
           <p>
             RamadanChennai.in is a{" "}
@@ -39,9 +48,8 @@ export default function Disclaimer() {
           </p>
 
           <p>
-            All Providers listed on this platform register voluntarily and are
-            solely responsible for the accuracy, authenticity, and legality of
-            the information they provide.
+            All Providers listed register voluntarily and are solely responsible
+            for the accuracy and legality of their information.
           </p>
 
           <p>
@@ -52,11 +60,9 @@ export default function Disclaimer() {
             any Provider, Masjid, Organization, or individual listed.
           </p>
 
-          <p>
-            We do not guarantee:
-          </p>
+          <p>We do not guarantee:</p>
 
-          <ul className="list-disc list-inside space-y-2 ml-2">
+          <ul className="list-disc list-inside space-y-1 ml-2 text-xs sm:text-sm md:text-base">
             <li>Food availability</li>
             <li>Quality or hygiene standards</li>
             <li>Timeliness of service</li>
@@ -65,22 +71,21 @@ export default function Disclaimer() {
           </ul>
 
           <p>
-            Any interaction, visit, communication, or arrangement made between
-            users and providers is done at the user's{" "}
+            Any interaction is done at the user's{" "}
             <span className="text-red-500 font-semibold">
               own discretion and risk.
             </span>
           </p>
 
           <p>
-            RamadanChennai.in shall{" "}
+            RamadanChennai.in{" "}
             <span className="text-red-500 font-semibold">
-              not be held liable
+              shall not be held liable
             </span>{" "}
             for:
           </p>
 
-          <ul className="list-disc list-inside space-y-2 ml-2">
+          <ul className="list-disc list-inside space-y-1 ml-2 text-xs sm:text-sm md:text-base">
             <li>Disputes between parties</li>
             <li>Financial transactions</li>
             <li>Damages or losses</li>
@@ -89,15 +94,7 @@ export default function Disclaimer() {
           </ul>
 
           <p>
-            If any activity occurs beyond the stated purpose of this platform,
-            including misuse, fraudulent activity, or unrelated services,{" "}
-            <span className="text-red-500 font-semibold">
-              we are not responsible.
-            </span>
-          </p>
-
-          <p>
-            Users are strongly advised to conduct their own{" "}
+            Users are advised to conduct their own{" "}
             <span className="text-red-500 font-semibold">
               due diligence and verification
             </span>{" "}
@@ -105,12 +102,10 @@ export default function Disclaimer() {
           </p>
 
           <p>
-            By using this website, you acknowledge and agree that we function
-            strictly as a{" "}
+            By using this website, you acknowledge that we function strictly as a{" "}
             <span className="text-red-500 font-semibold">
-              facilitator of connections only
-            </span>{" "}
-            and accept all associated risks.
+              facilitator of connections only.
+            </span>
           </p>
 
         </div>

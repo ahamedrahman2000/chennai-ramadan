@@ -4,7 +4,8 @@ import FeaturesSection from "../components/FeaturedSections";
 import FeedbackForm from "../components/FeddbackForm";
 import { HelpSection } from "../components/HelpSection";
 import Hero from "../components/Hero";
-import MasjidMap from "../components/MasjidMap";
+import HomeStatusPopup from "../components/HomeStatusPopup"; 
+import MasjidMap2 from "../components/MasjidMap2";
 import MissionSection from "../components/MissionSection";
 import OuMission from "../components/OurMission";
 import RamadanPopup from "../components/RamadanPopup";
@@ -27,10 +28,12 @@ export default function Home() {
   return (
     <>
       <RamadanPopup />
+      <HomeStatusPopup />
+
       <Hero />
 
       <div id="map-section">
-        <MasjidMap />
+        <MasjidMap2 />
       </div>
       <HelpSection />
       <AboutUs />
