@@ -152,7 +152,7 @@ export default function Navbar() {
               <Home size={18} /> Home
             </Link>
             <Link
-              to="/sehri-locations2"
+              to="/sehri-locations"
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
             >

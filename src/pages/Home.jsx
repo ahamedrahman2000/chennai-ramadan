@@ -5,7 +5,7 @@ import FeedbackForm from "../components/FeddbackForm";
 import { HelpSection } from "../components/HelpSection";
 import Hero from "../components/Hero";
 import HomeStatusPopup from "../components/HomeStatusPopup"; 
-import MasjidMap2 from "../components/MasjidMap2";
+import MasjidMap from "../components/MasjidMap"; 
 import MissionSection from "../components/MissionSection";
 import OuMission from "../components/OurMission";
 import RamadanPopup from "../components/RamadanPopup";
@@ -33,7 +33,7 @@ export default function Home() {
       <Hero />
 
       <div id="map-section">
-        <MasjidMap2 />
+        <MasjidMap />
       </div>
       <HelpSection />
       <AboutUs />

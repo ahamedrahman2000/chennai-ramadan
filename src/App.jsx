@@ -23,27 +23,27 @@ import { useEffect, useState } from "react";
 import BlogPage from "./components/Blog";
 function App() {
   const [visitorCount, setVisitorCount] = useState(0);
-  useEffect(() => {
-    // Disable right-click
-    const handleContextMenu = (e) => e.preventDefault();
-    document.addEventListener("contextmenu", handleContextMenu);
+  // useEffect(() => {
+  //   // Disable right-click
+  //   const handleContextMenu = (e) => e.preventDefault();
+  //   document.addEventListener("contextmenu", handleContextMenu);
 
-    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-    const handleKeyDown = (e) => {
-      if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
-        (e.ctrlKey && e.key.toUpperCase() === "U")
-      ) {
-        e.preventDefault();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  //   // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+  //   const handleKeyDown = (e) => {
+  //     if (
+  //       e.key === "F12" ||
+  //       (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
+  //       (e.ctrlKey && e.key.toUpperCase() === "U")
+  //     ) {
+  //       e.preventDefault();
+  //     }
+  //   };
+  //   document.addEventListener("keydown", handleKeyDown);
+  //   return () => {
+  //     document.removeEventListener("contextmenu", handleContextMenu);
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
 
   useEffect(() => {
     // Register visit
