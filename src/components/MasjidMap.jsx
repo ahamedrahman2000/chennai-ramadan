@@ -35,13 +35,62 @@ export default function MasjidMap() {
     return R * c;
   };
 
-  // Request user location
-  const getUserLocation = () => {
-    setLocationRequested(true);
-    setLoading(true);
+  // // Request user location
+  // const getUserLocation = () => {
+  //   setLocationRequested(true);
+  //   setLoading(true);
 
-    if (!navigator.geolocation) {
-      alert("Geolocation not supported by your browser");
+  //   if (!navigator.geolocation) {
+  //     alert("Geolocation not supported by your browser");
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   navigator.geolocation.getCurrentPosition(
+  //     (pos) => {
+  //       const userLat = pos.coords.latitude;
+  //       const userLng = pos.coords.longitude;
+
+  //       const sorted = providers
+  //         .map((p) => ({
+  //           ...p,
+  //           distance: calculateDistance(userLat, userLng, p.lat, p.lng),
+  //         }))
+  //         .sort((a, b) => a.distance - b.distance)
+  //         .slice(0, 5);
+
+  //       setNearestProviders(sorted);
+  //       setLoading(false);
+  //     },
+  //     (error) => {
+  //       console.error("Geolocation error:", error);
+  //       alert(
+  //         "Location access denied. Showing providers without distance calculation.",
+  //       );
+  //       setNearestProviders([...providers].slice(0, 5)); // fallback
+  //       setLoading(false);
+  //     },
+  //   );
+  // };
+const getUserLocation = async () => {
+  setLocationRequested(true);
+  setLoading(true);
+
+  if (!navigator.geolocation) {
+    alert("Geolocation not supported by your browser");
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const permission = await navigator.permissions.query({
+      name: "geolocation",
+    });
+
+    if (permission.state === "denied") {
+      alert(
+        "Location permission is blocked. Please enable it in your browser settings."
+      );
       setLoading(false);
       return;
     }
@@ -52,6 +101,13 @@ export default function MasjidMap() {
         const userLng = pos.coords.longitude;
 
         const sorted = providers
+          .filter(
+            (p) =>
+              p.lat !== null &&
+              p.lng !== null &&
+              !isNaN(p.lat) &&
+              !isNaN(p.lng)
+          )
           .map((p) => ({
             ...p,
             distance: calculateDistance(userLat, userLng, p.lat, p.lng),
@@ -64,14 +120,15 @@ export default function MasjidMap() {
       },
       (error) => {
         console.error("Geolocation error:", error);
-        alert(
-          "Location access denied. Showing providers without distance calculation.",
-        );
-        setNearestProviders([...providers].slice(0, 5)); // fallback
+        alert("Location access denied.");
         setLoading(false);
-      },
+      }
     );
-  };
+  } catch (err) {
+    console.error("Permission error:", err);
+    setLoading(false);
+  }
+};
 
   return (
   <section className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-6 sm:py-">
@@ -87,6 +144,10 @@ export default function MasjidMap() {
           >
             Show Nearby Sehri Locations
           </button>
+        <p className="text-red-500 font-bold text-center mt-3 animate-pulse">
+  ⚠️ Kindly allow location on your device.
+</p>
+
         </div>
       )}
 
