@@ -20,8 +20,31 @@ import MasjidMap from "./components/MasjidMap";
 import MasjidMap2 from "./components/MasjidMap2";
 import DuaPage from "./components/Duas";
 import { useEffect, useState } from "react";
+import BlogPage from "./components/Blog";
 function App() {
   const [visitorCount, setVisitorCount] = useState(0);
+  useEffect(() => {
+    // Disable right-click
+    const handleContextMenu = (e) => e.preventDefault();
+    document.addEventListener("contextmenu", handleContextMenu);
+
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    const handleKeyDown = (e) => {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
+        (e.ctrlKey && e.key.toUpperCase() === "U")
+      ) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   useEffect(() => {
     // Register visit
     fetch("https://ramadan-sehri-backend.onrender.com/api/visit", {
@@ -55,6 +78,7 @@ function App() {
           <Route path="/help" element={<HelpSection />} />
           <Route path="/sehri-locations" element={<MasjidMap />} />
           <Route path="/sehri-locations2" element={<MasjidMap2 />} />
+          <Route path="/blogPage" element={<BlogPage />} />
           <Route
             path="/ramadan-sehri-chennai-2026"
             element={<RamadanChennaiSEO />}

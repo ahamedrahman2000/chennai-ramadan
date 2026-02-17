@@ -10,6 +10,7 @@ import {
   AlertTriangle,
   Pen,
   MapPin,
+  Mic,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -67,6 +68,13 @@ export default function Navbar() {
             </Link>
             <Link to="/find-sehri" className="hover:text-[#FFD700] transition">
               Find Sehri
+            </Link>
+            <Link
+              to="/blogPage"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
+            >
+              <Mic size={18} /> Spiritual Lecture
             </Link>
             <Link
               to="/prayer-times"
@@ -177,6 +185,13 @@ export default function Navbar() {
               className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
             >
               <MessageCircle size={18} /> Duas
+            </Link>
+            <Link
+              to="/blogPage"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 hover:bg-[#D4AF37] hover:text-[#111111] px-3 py-2 rounded transition"
+            >
+              <Mic size={18} /> Spiritual Lecture
             </Link>
             <Link
               to="/ask-scholar"

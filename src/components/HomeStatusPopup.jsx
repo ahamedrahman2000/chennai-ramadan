@@ -34,7 +34,7 @@ export default function HomeStatusPopup() {
       {/* FLOAT BUTTON */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 bg-red-600 text-white px-5 py-3 rounded-full shadow-lg animate-pulse z-50"
+        className="fixed bottom-16 right-0 bg-red-600 text-white px-5 py-3 rounded-full shadow-lg animate-pulse z-50"
       >
         ⚠ Live Status
       </button>

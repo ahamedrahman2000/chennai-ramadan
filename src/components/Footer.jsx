@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Moon, Star, Clock, Mail, Instagram } from "lucide-react";
+import { useLinkClicks } from "../components/AEZTracker";
 
 const RAMADAN_START = new Date("2026-02-19T00:00:00");
 const RAMADAN_TOTAL_DAYS = 30;
@@ -8,6 +9,7 @@ const RAMADAN_TOTAL_DAYS = 30;
 export default function Footer({ visitorCount }) {
   const [time, setTime] = useState("");
   const [ramadanProgress, setRamadanProgress] = useState(null);
+  const [amburClicks, trackAmburClick] = useLinkClicks("ambur-express");
 
   // Chennai Clock
   const getChennaiTime = () => {
@@ -63,7 +65,7 @@ export default function Footer({ visitorCount }) {
           <div className="flex gap-8 items-center">
             <p className="text-2xl text-[#D4AF37] font-semibold">رمضان كريم</p>
             <p className="text-[#D4AF37] text-sm font-semibold">
-              {visitorCount} Hearts Connected ❤️
+              {visitorCount} ❤️ Connected {amburClicks}
             </p>
           </div>
         </div>
@@ -208,6 +210,7 @@ export default function Footer({ visitorCount }) {
                   alt="Visitors"
                 />
               </a>
+              <div></div>
             </div>
           </div>
         </div>
@@ -223,9 +226,18 @@ export default function Footer({ visitorCount }) {
             </span>
           </p>
         </p>
+
         <p>
           🌟 Associated with{" "}
-          <span className="text-blue-500 font-semibold">Ambur Express</span>
+          <a
+            href="https://linktr.ee/AmburExpress"
+            onClick={trackAmburClick}
+            className="text-blue-500 font-semibold"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ambur Express
+          </a>
         </p>
       </div>
     </footer>
