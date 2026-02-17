@@ -214,9 +214,19 @@ export default function Footer({ visitorCount }) {
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-[#2A2A2A] text-center py-4 text-sm text-[#A1A1AA] relative z-10">
-        © {new Date().getFullYear()} Chennai Ramadan. Built with care for the
-        community.
+      <div className="border-t border-[#2A2A2A] text-center py-4 text-sm text-[#A1A1AA] relative z-10 space-y-1">
+        <p>
+          <p>
+            Developed by{" "}
+            <span className="text-[#D4AF37] font-semibold">
+              Chennai Ramadan © {new Date().getFullYear()}{" "}
+            </span>
+          </p>
+        </p>
+        <p>
+          🌟 Associated with{" "}
+          <span className="text-blue-500 font-semibold">Ambur Express</span>
+        </p>
       </div>
     </footer>
   );
