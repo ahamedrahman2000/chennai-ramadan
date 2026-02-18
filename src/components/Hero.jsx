@@ -1,12 +1,29 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { prayerTimes } from "../data/prayerTimes";
 import { Link } from "react-router-dom";
+
+import {
+  MapPin,
+  PlusCircle,
+  Grid,
+  MessageCircle,
+  Book,
+  UserCheck,
+  Clock,
+  Users,
+  Wifi,
+  ListChecks,
+  Mic2,
+  MapPinHouse,
+} from "lucide-react";
+import HomeStatusPopup from "./HomeStatusPopup";
 
 const RAMADAN_START = new Date("2026-02-19T00:00:00+05:30");
 const HIJRI_YEAR = 1447;
 const SHABAN_TOTAL_DAYS = 29;
 
-export default function Hero() { 
+export default function Hero() {
+  const [statusOpen, setStatusOpen] = useState(false);
   const [ramadanDay, setRamadanDay] = useState(null);
   const [hijriDate, setHijriDate] = useState("");
   const [countdown, setCountdown] = useState("");
@@ -117,30 +134,37 @@ export default function Hero() {
 
   return (
     <>
-     <section className="relative flex items-center px-4 bg-[#1A1A1A] text-white overflow-hidden pt-6 pb-10">
+      <section className="relative flex items-center px-4 bg-[#1A1A1A] text-white overflow-hidden pt-6 pb-10">
+        {/* 🌌 Ramadan Night Sky Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-60">
+          {/* Stars */}
+          <div className="absolute w-1 h-1 bg-white/50 rounded-full top-[10%] left-[20%] animate-twinkle"></div>
+          <div className="absolute w-1.5 h-1.5 bg-white/50 rounded-full top-[60%] left-[40%] animate-twinkle delay-500"></div>
+          <div className="absolute w-1 h-1 bg-yellow-400 rounded-full top-[80%] left-[80%] animate-twinkle delay-700"></div>
+          <div className="absolute w-1 h-1 bg-white/50 rounded-full top-[50%] left-[10%] animate-twinkle delay-1000"></div>
+
+          {/* Glowing Moons */}
+          <div className="absolute w-32 h-32 bg-yellow-400 rounded-full blur-3xl opacity-10 top-[-40px] right-[-40px]"></div>
+          <div className="absolute w-24 h-24 bg-yellow-300 rounded-full blur-2xl opacity-10 bottom-[-30px] left-[-30px]"></div>
+        </div>
+
         {/* Moon Emoji */}
-        <div className="absolute top-12 right-8 text-4xl sm:text-5xl text-yellow-400 animate-pulse">
+        <div className="absolute top-5 right-2 text-4xl sm:text-5xl text-yellow-400 animate-pulse ">
           🌙
         </div>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 text-center md:text-left relative z-10">
           <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4">
+            {/* <h4 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4">
               Ramadan 2026
-            </h1>
+            </h4> */}
 
-            <h2 className="text-2xl sm:text-3xl md:text-3xl text-[#D4AF37] mb-2 sm:mb-4">
-              رمضان كريم
-            </h2>
-
-            <p className="mb-1 sm:mb-2 text-[#D4AF37] text-sm sm:text-base">
-              {hijriDate}
+            <p className="mb-3 sm:mb-2 text-xl sm:text-base font-bold text-yellow-400 drop-shadow-[0_0_10px_rgba(255,215,0,0.9)] tracking-wide">
+              ✨ {hijriDate}
             </p>
 
             {ramadanDay ? (
-              <p className="mb-2 sm:mb-4 text-sm sm:text-base">
-                🌙 Ramadan Day {ramadanDay}
-              </p>
+              <p className="mb-2 sm:mb-4 text-sm sm:text-base"></p>
             ) : (
               <p className="mb-2 sm:mb-4 text-yellow-400 text-sm sm:text-base">
                 Ramadan starts in {daysToRamadan} days
@@ -148,7 +172,7 @@ export default function Hero() {
             )}
 
             {ramadanDay && (
-              <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-2 sm:gap-4 mb-4">
+              <div className="flex flex-row sm:flex-row justify-center md:justify-start gap-2 sm:gap-4 mb-4">
                 <button
                   onClick={() => setMode("sehar")}
                   className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm sm:text-base ${
@@ -173,25 +197,93 @@ export default function Hero() {
               ⏳ {countdown}
             </p>
 
-            <div className="text-center md:text-left mt-2 sm:mt-4 text-[#E5E7EB] text-sm sm:text-base max-w-md sm:max-w-xl mx-auto md:mx-0">
-              Looking for free Sehri places in Chennai? Or are you providing
-              Sehri in your area? Register with us to help the community.{" "}
-              <span className="text-green-500">May Allah reward you!</span>
-            </div>
+            <div className="mt-6 sm:mt-8 grid  grid-cols-4 gap-4 max-w-xl mx-auto md:mx-0">
+              {[
+                { to: "/find-sehri", icon: <MapPin size={26} />, name: "Find" },
+                {
+                  to: "/register-sehri",
+                  icon: <PlusCircle size={26} />,
+                  name: "Register",
+                },
+                {
+                  to: "/organization-list",
+                  icon: <ListChecks size={26} />,
+                  name: "Providers",
+                },
+                {
+                  to: "/sehri-locations",
+                  icon: <MapPinHouse size={26} />,
+                  name: "Locations",
+                },
+                {
+                  to: "/ask-scholar",
+                  icon: <UserCheck size={26} />,
+                  name: "Scholar",
+                },
+                { to: "/dua", icon: <Book size={26} />, name: "Duas" },
+                {
+                  to: "/prayer-times",
+                  icon: <Clock size={26} />,
+                  name: "Prayer",
+                },
+                {
+                  to: "/ladies",
+                  icon: <Users size={26} />,
+                  name: "Ladies",
+                  special: true, // 👈 add this
+                },
+                { to: "/blogPage", icon: <Mic2 size={26} />, name: "Lectures" },
+                { to: "/areapages", icon: <Grid size={26} />, name: "Areas" },
+                {
+                  to: "/coming-soon",
+                  icon: <MessageCircle size={26} />,
+                  name: "Chat",
+                },
+              ].map((item, index) => (
+                <Link
+                  key={index}
+                  to={item.to}
+                  className={`flex flex-col items-center justify-center 
+      rounded-xl py-4 transition hover:scale-105
+      ${
+        item.special
+          ? "bg-pink-500 border border-white-500"
+          : "bg-[#222222] border border-[#3A3A3A] hover:border-[#D4AF37]"
+      }`}
+                >
+                  <div
+                    className={`mb-2 ${item.special ? "text-white" : "text-[#D4AF37]"}`}
+                  >
+                    {item.icon}
+                  </div>
 
-            <div className="flex flex-row sm:flex-row justify-center md:justify-start mt-4 sm:mt-6 gap-3 sm:gap-4">
-              <Link
-                to="/find-sehri"
-                className="bg-[#D4AF37] text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base shadow-[0_0_15px_rgba(212,175,55,0.6)] hover:scale-105 transition"
+                  <span
+                    className={`text-xs sm:text-sm font-medium ${
+                      item.special ? "text-white" : "text-[#E5E7EB]"
+                    }`}
+                  >
+                    {item.name}
+                  </span>
+                </Link>
+              ))}
+
+              {/* Live Status Special Card */}
+              <div
+                onClick={() => setStatusOpen(true)}
+                className="flex flex-col items-center justify-center 
+               bg-[#222222] 
+               border border-[#3A3A3A] 
+               rounded-xl 
+               py-4 
+               transition 
+               hover:scale-105 
+               cursor-pointer"
               >
-                Find Sehri
-              </Link>
-              <Link
-                to="/register-sehri"
-                className="bg-[#D4AF37] text-black px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base shadow-[0_0_15px_rgba(212,175,55,0.6)] hover:scale-105 transition"
-              >
-                Register Now
-              </Link>
+                <Wifi size={26} className="text-red-500 mb-2 animate-pulse" />
+                <span className="text-xs sm:text-sm font-semibold text-red-500 animate-pulse">
+                  Live
+                </span>
+              </div>
             </div>
           </div>
 
@@ -218,6 +310,9 @@ export default function Hero() {
           </div>
         </div>
       </section>
+
+      {/* Popup Component */}
+      <HomeStatusPopup open={statusOpen} setOpen={setStatusOpen} />
     </>
   );
 }

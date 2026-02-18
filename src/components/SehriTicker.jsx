@@ -4,7 +4,7 @@ const text = [
   "May Allah reward you."
 ];
   return (
-    <div className="w-full   text-white overflow-hidden  shadow-sm">
+    <div className="w-full mt-10  text-white overflow-hidden  shadow-sm">
 
       <div className="relative flex whitespace-nowrap">
         <div className="animate-marquee hover:[animation-play-state:paused] py-2 text-sm md:text-base font-medium">

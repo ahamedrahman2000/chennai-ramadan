@@ -1,23 +1,20 @@
 import { useState, useEffect, useMemo } from "react";
 import { Phone, MapPin, Clock, Star, Share2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 export default function FindSehri() {
-  const [search, setSearch] = useState("");
-  const [areaFilter, setAreaFilter] = useState("All");
+  const [areaFilter, setAreaFilter] = useState("All Areas");
+  const [serviceFilter, setServiceFilter] = useState("All Service Types");
+  const [sehriTypeFilter, setSehriTypeFilter] = useState("All Sehri Types");
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
-
-  // Fetch providers from backend API
+  // Fetch providers
   useEffect(() => {
     const fetchProviders = async () => {
       try {
         const response = await fetch(
           "https://ramadan-sehri-backend.onrender.com/api/providers",
         );
-        // Replace with live backend URL when deployed
         const data = await response.json();
         setProviders(data);
       } catch (err) {
@@ -29,7 +26,7 @@ export default function FindSehri() {
     fetchProviders();
   }, []);
 
-  // Remove duplicates based on name + area
+  // Remove duplicates
   const uniqueProviders = useMemo(() => {
     const map = new Map();
     (providers || []).forEach((p) => {
@@ -39,23 +36,51 @@ export default function FindSehri() {
     return Array.from(map.values());
   }, [providers]);
 
-  const uniqueAreas = [
-    "All",
-    ...new Set(uniqueProviders.map((p) => p.area || "")),
-  ];
+  // Unique Areas
+  const uniqueAreas = useMemo(() => {
+    const areas = [
+      ...new Set(providers.map((p) => p.area?.trim()).filter(Boolean)),
+    ];
+    areas.sort((a, b) => a.localeCompare(b));
+    return ["All Areas", ...areas];
+  }, [providers]);
 
+  // Unique Service Types
+  const uniqueServiceTypes = useMemo(() => {
+    const services = [
+      ...new Set(providers.map((p) => p.serviceType?.trim()).filter(Boolean)),
+    ];
+    services.sort((a, b) => a.localeCompare(b));
+    return ["All Service Types", ...services];
+  }, [providers]);
+
+  // Unique Sehri Types
+  const uniqueSehriTypes = useMemo(() => {
+    const types = [
+      ...new Set(providers.map((p) => p.sehriType?.trim()).filter(Boolean)),
+    ];
+    types.sort((a, b) => a.localeCompare(b));
+    return ["All Sehri Types", ...types];
+  }, [providers]);
+
+  // Filtering
   const filtered = useMemo(() => {
     return uniqueProviders
       .filter((p) => {
-        const matchesSearch =
-          !search ||
-          p.name?.toLowerCase().includes(search.toLowerCase()) ||
-          p.area?.toLowerCase().includes(search.toLowerCase());
-        const matchesArea = areaFilter === "All" || p.area === areaFilter;
-        return matchesSearch && matchesArea;
+        const matchesArea = areaFilter === "All Areas" || p.area === areaFilter;
+
+        const matchesService =
+          serviceFilter === "All Service Types" ||
+          p.serviceType === serviceFilter;
+
+        const matchesSehriType =
+          sehriTypeFilter === "All Sehri Types" ||
+          p.sehriType === sehriTypeFilter;
+
+        return matchesArea && matchesService && matchesSehriType;
       })
       .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-  }, [search, areaFilter, uniqueProviders]);
+  }, [areaFilter, serviceFilter, sehriTypeFilter, uniqueProviders]);
 
   const handleShare = (provider) => {
     const message = `
@@ -75,7 +100,6 @@ Additional Info: ${provider.additionalInfo || "N/A"}
     );
   };
 
-  // Show loading state
   if (loading) {
     return (
       <p className="text-center mt-10 text-lg text-yellow-500">
@@ -85,56 +109,75 @@ Additional Info: ${provider.additionalInfo || "N/A"}
   }
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-10 overflow-x-hidden">
-      {/* Top info */}
-      <div className="max-w-7xl mx-auto mb-6 p-4 bg-[#222] rounded-lg text-center text-[#D4AF37] font-semibold">
-        <p>
-          <span className=" font-bold">Missing Sehri locations?</span> If you
-          know any Sehri providing areas, please use the{" "}
-          <span
-            className="text-green-500 cursor-pointer"
-            onClick={() => navigate("/register-sehri")}
-          >
-            Register
-          </span>{" "}
-          to add or{" "}
-          <span className="text-green-500 cursor-pointer">update</span> details
-          and support the community.
-        </p>
-        <p>
-          Kindly click a{" "}
-          <span
-            className="text-red-500 font-bold cursor-pointer underline"
-            onClick={() => navigate("/#map-section")}
-          >
-            Sehri location
-          </span>{" "}
-          to view updated information.
-        </p>
-      </div>
-
-      <h1 className="text-3xl font-bold text-center mb-6">
+    <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-5">
+      {/* Header */}
+      <h1 className="text-xl font-bold text-center mb-8">
         Sehri Locations – Chennai
       </h1>
 
-      {/* FILTERS: Search + Area */}
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row gap-4 mb-10">
-        <input
-          type="text"
-          placeholder="Search by name or area..."
-          className="flex-1 p-3 rounded-lg bg-[#2A2A2A] placeholder-gray-400"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select
-          className="p-3 rounded-lg bg-[#2A2A2A]"
-          value={areaFilter}
-          onChange={(e) => setAreaFilter(e.target.value)}
-        >
-          {uniqueAreas.map((area, i) => (
-            <option key={i}>{area}</option>
-          ))}
-        </select>
+      {/* FILTER SECTION */}
+      <div className="max-w-7xl mx-auto bg-[#222] p-6 rounded-2xl mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {/* Area */}
+          <div className="flex flex-col">
+            <label className="mb-2 text-sm text-[#D4AF37] font-semibold">
+              Filter by Area
+            </label>
+            <select
+              className="p-3 rounded-lg bg-[#2A2A2A] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+              value={areaFilter}
+              onChange={(e) => setAreaFilter(e.target.value)}
+            >
+              {uniqueAreas.map((area, i) => (
+                <option key={i} value={area}>
+                  {area}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Service Type */}
+          <div className="flex flex-col">
+            <label className="mb-2 text-sm text-[#D4AF37] font-semibold">
+              Filter by Service Type
+            </label>
+            <select
+              className="p-3 rounded-lg bg-[#2A2A2A] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+              value={serviceFilter}
+              onChange={(e) => setServiceFilter(e.target.value)}
+            >
+              {uniqueServiceTypes.map((service, i) => (
+                <option key={i} value={service}>
+                  {service}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Sehri Type */}
+          <div className="flex flex-col">
+            <label className="mb-2 text-sm text-[#D4AF37] font-semibold">
+              Filter by Sehri Type
+            </label>
+            <select
+              className="p-3 rounded-lg bg-[#2A2A2A] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+              value={sehriTypeFilter}
+              onChange={(e) => setSehriTypeFilter(e.target.value)}
+            >
+              {uniqueSehriTypes.map((type, i) => (
+                <option key={i} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* RESULT COUNT */}
+      <div className="max-w-7xl mx-auto mb-6 text-[#D4AF37] font-semibold text-sm">
+        Showing {filtered.length} Sehri Location
+        {filtered.length !== 1 && "s"}
       </div>
 
       {/* CARDS */}
@@ -144,6 +187,7 @@ Additional Info: ${provider.additionalInfo || "N/A"}
             No providers found.
           </p>
         )}
+
         {filtered.map((provider) => (
           <div
             key={provider.name + provider.area}
@@ -153,87 +197,68 @@ Additional Info: ${provider.additionalInfo || "N/A"}
               {/* Header */}
               <div className="flex justify-between items-start">
                 <h3 className="text-xl font-bold text-[#D4AF37]">
-                  {provider.name || "Unknown Masjid / Organization"}
+                  {provider.name || "Unknown"}
                 </h3>
                 {provider.featured && (
                   <Star className="text-yellow-400" size={18} />
                 )}
               </div>
 
-              {/* Sehri Type */}
-              <span
-                className={`text-xs px-3 py-1 rounded-full mt-2 inline-block ${
-                  provider.sehriType === "Free"
-                    ? "bg-green-600 text-white"
-                    : "bg-yellow-500 text-black"
-                }`}
-              >
-                {provider.sehriType || "Not specified"}
-              </span>
+              {/* Sehri Type Badge */}
+              <div className="mt-2">
+                <span
+                  className={`text-xs px-3 py-1 rounded-full ${
+                    provider.sehriType === "Free"
+                      ? "bg-green-600 text-white"
+                      : "bg-yellow-500 text-black"
+                  }`}
+                >
+                  {provider.sehriType || "Sehri Type Not Specified"}
+                </span>
+              </div>
 
               {/* Area */}
-              <div
-                className={`flex items-center gap-2 mt-3 ${
-                  !provider.area ? "text-red-500" : "text-[#A1A1AA]"
-                }`}
-              >
+              <div className="flex items-center gap-2 mt-3 text-[#A1A1AA]">
                 <MapPin size={16} />
                 {provider.area || "Area missing"}
               </div>
 
-              {/* Full Address */}
-              <p
-                className={`text-sm mt-1 ${
-                  !provider.address ? "text-red-500" : "text-[#A1A1AA]"
-                }`}
-              >
-                {provider.address || "Address missing"}
-              </p>
-
               {/* Service Type */}
-              <div className="flex flex-wrap gap-2 mt-4">
-                {provider.serviceType ? (
-                  <span className="text-xs bg-[#2A2A2A] px-3 py-1 rounded-full">
-                    {provider.serviceType}
-                  </span>
-                ) : (
-                  <span className="text-xs bg-[#2A2A2A] px-3 py-1 rounded-full">
-                    Service not specified
-                  </span>
-                )}
+              <div className="mt-3">
+                <span className="text-xs bg-[#2A2A2A] px-3 py-1 rounded-full text-[#E5E7EB]">
+                  {provider.serviceType || "Service Type Not Specified"}
+                </span>
               </div>
 
-              {/* Food / Serving Time */}
-              <div className="flex items-center gap-2 mt-4 text-sm">
+              {/* Time */}
+              <div className="flex items-center gap-2 mt-4 text-sm text-[#A1A1AA]">
                 <Clock size={16} />
                 {provider.foodTime || "Time not available"}
               </div>
 
               {/* Contact */}
-              {provider.contactName !== "-" ||
-              provider.contactNumber !== "-" ? (
+              {provider.contactNumber && (
                 <div className="flex items-center gap-2 mt-4 font-semibold">
                   <Phone size={16} />
                   <a href={`tel:${provider.contactNumber}`}>
-                    {provider.contactName || "-"} –{" "}
-                    {provider.contactNumber || "-"}
+                    {provider.contactName || "-"} – {provider.contactNumber}
                   </a>
                 </div>
-              ) : null}
+              )}
 
               {/* Additional Info */}
               {provider.additionalInfo && (
-                <p className="text-sm mt-3 text-[#A1A1AA]">
+                <div className="mt-4 bg-[#1F1F1F] p-3 rounded-lg text-sm text-[#D1D5DB] border border-[#2A2A2A]">
                   {provider.additionalInfo}
-                </p>
+                </div>
               )}
             </div>
 
-            {/* Card Buttons */}
-            <div className="flex gap-2 mt-4">
+            {/* Share Button */}
+            <div className="mt-6">
               <button
                 onClick={() => handleShare(provider)}
-                className="flex-1 bg-[#D4AF37] text-black px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(212,175,55,0.7)] transition"
+                className="w-full bg-[#D4AF37] text-black px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(212,175,55,0.7)] transition"
               >
                 <Share2 size={16} /> Share
               </button>

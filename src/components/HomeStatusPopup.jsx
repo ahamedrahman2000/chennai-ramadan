@@ -1,148 +1,65 @@
 import { useEffect, useState } from "react";
 
-export default function HomeStatusPopup() {
-  const [open, setOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("updated");
-
-  const [updatedAreas, setUpdatedAreas] = useState([]);
-  const [notUpdatedAreas, setNotUpdatedAreas] = useState([]);
-
-  const [updatedCount, setUpdatedCount] = useState(0);
-  const [notUpdatedCount, setNotUpdatedCount] = useState(0);
-
+export default function HomeStatusPopup({ open, setOpen }) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    // Fetch message
-    fetch("https://ramadan-sehri-backend.onrender.com/api/status-message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message || ""));
+    if (open) {
+      fetch("https://ramadan-sehri-backend.onrender.com/api/status-message")
+        .then((res) => res.json())
+        .then((data) => setMessage(data.message || ""));
+      
+      // Prevent background scroll
+      document.body.style.overflow = "hidden";
+    }
 
-    // Fetch grouped status summary
-    fetch("https://ramadan-sehri-backend.onrender.com/api/status-summary")
-      .then((res) => res.json())
-      .then((data) => {
-        setUpdatedAreas(data.updated || []);
-        setNotUpdatedAreas(data.notUpdated || []);
-        setUpdatedCount(data.updatedCount || 0);
-        setNotUpdatedCount(data.notUpdatedCount || 0);
-      });
-  }, []);
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
+  if (!open) return null;
 
   return (
-    <>
-      {/* FLOAT BUTTON */}
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-16 right-0 bg-red-600 text-white px-5 py-3 rounded-full shadow-lg animate-pulse z-50"
+    <div
+      onClick={() => setOpen(false)}
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 px-4 animate-fadeIn"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()} // prevent close when clicking inside
+        className="bg-gradient-to-br from-[#1C1C1C] to-[#121212] 
+                   w-full max-w-md 
+                   rounded-2xl 
+                   p-6 
+                   relative 
+                   border border-[#D4AF37]/40 
+                   shadow-[0_0_40px_rgba(212,175,55,0.25)] 
+                   transform transition-all duration-300 scale-100"
       >
-        ⚠ Live Status
-      </button>
-
-    {/* POPUP */}
-{open && (
-  <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-    
-    <div className="bg-gradient-to-br from-[#1C1C1C] to-[#121212] 
-                    w-full max-w-2xl 
-                    rounded-2xl 
-                    p-5 sm:p-6 
-                    relative 
-                    border border-[#D4AF37]/40 
-                    shadow-[0_0_40px_rgba(212,175,55,0.25)] 
-                    animate-fadeIn">
-
-      {/* CLOSE */}
-      <button
-        onClick={() => setOpen(false)}
-        className="absolute top-4 right-4 
-                   text-gray-400 hover:text-[#D4AF37] 
-                   transition text-lg"
-      >
-        ✕
-      </button>
-
-      {/* TITLE */}
-      <h2 className="text-lg sm:text-xl font-bold text-[#D4AF37] mb-4 text-center">
-        Area Update Status
-      </h2>
-
-      {/* MESSAGE */}
-      {message && (
-        <div className="mb-4 p-3 bg-yellow-900/40 
-                        text-yellow-300 
-                        rounded-lg text-sm border border-yellow-600/40">
-          {message}
-        </div>
-      )}
-
-      {/* TABS */}
-      <div className="flex bg-[#222] rounded-full p-1 mb-5">
+        {/* Close Button */}
         <button
-          onClick={() => setActiveTab("updated")}
-          className={`flex-1 py-2 rounded-full text-sm font-semibold transition ${
-            activeTab === "updated"
-              ? "bg-green-500 text-black"
-              : "text-gray-400"
-          }`}
+          onClick={() => setOpen(false)}
+          className="absolute top-3 right-3 text-gray-400 hover:text-[#D4AF37] transition"
         >
-          Updated ({updatedCount})
+          ✕
         </button>
 
-        <button
-          onClick={() => setActiveTab("not_updated")}
-          className={`flex-1 py-2 rounded-full text-sm font-semibold transition ${
-            activeTab === "not_updated"
-              ? "bg-red-500 text-black"
-              : "text-gray-400"
-          }`}
-        >
-          Not Updated ({notUpdatedCount})
-        </button>
-      </div>
+        {/* Title */}
+        <h2 className="text-lg font-bold text-[#D4AF37] text-center mb-4">
+          📡 Live Status
+        </h2>
 
-      {/* LIST */}
-      <div className="max-h-72 overflow-y-auto space-y-2 no-scrollbar pr-1">
-        {(activeTab === "updated"
-          ? updatedAreas
-          : notUpdatedAreas
-        ).map((item, index) => (
-          <div
-            key={index}
-            className="bg-[#222] 
-                       rounded-lg 
-                       px-4 py-3 
-                       flex justify-between items-center 
-                       hover:bg-[#2A2A2A] 
-                       transition"
-          >
-            <p className="text-white text-sm font-medium">
-              {item.area}
-            </p>
-
-            <span className="text-xs bg-[#D4AF37]/20 
-                             text-[#D4AF37] 
-                             px-2 py-1 
-                             rounded-full">
-              {item.count}
-            </span>
+        {/* Message */}
+        {message ? (
+          <div className="p-4 bg-yellow-900/40 text-yellow-300 rounded-xl text-sm border border-yellow-600/40 text-center">
+            {message}
           </div>
-        ))}
-
-        {(activeTab === "updated"
-          ? updatedAreas
-          : notUpdatedAreas
-        ).length === 0 && (
-          <p className="text-gray-500 text-center py-4 text-sm">
-            No data available
+        ) : (
+          <p className="text-gray-500 text-center text-sm">
+            No status available
           </p>
         )}
       </div>
-
     </div>
-  </div>
-)}
-
-    </>
   );
 }

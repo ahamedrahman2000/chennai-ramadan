@@ -20,30 +20,33 @@ import MasjidMap from "./components/MasjidMap";
 import MasjidMap2 from "./components/MasjidMap2";
 import DuaPage from "./components/Duas";
 import { useEffect, useState } from "react";
-import BlogPage from "./components/Blog";
+import BlogPage from "./components/Blog"; 
+import FloatingBottomNav from "./components/BottomNav"; 
+import AreaPage from "./components/Area";
+import LadiesSehri from "./components/Ladies";
 function App() {
   const [visitorCount, setVisitorCount] = useState(0);
-  useEffect(() => {
-    // Disable right-click
-    const handleContextMenu = (e) => e.preventDefault();
-    document.addEventListener("contextmenu", handleContextMenu);
+  // useEffect(() => {
+  //   // Disable right-click
+  //   const handleContextMenu = (e) => e.preventDefault();
+  //   document.addEventListener("contextmenu", handleContextMenu);
 
-    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-    const handleKeyDown = (e) => {
-      if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
-        (e.ctrlKey && e.key.toUpperCase() === "U")
-      ) {
-        e.preventDefault();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  //   // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+  //   const handleKeyDown = (e) => {
+  //     if (
+  //       e.key === "F12" ||
+  //       (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
+  //       (e.ctrlKey && e.key.toUpperCase() === "U")
+  //     ) {
+  //       e.preventDefault();
+  //     }
+  //   };
+  //   document.addEventListener("keydown", handleKeyDown);
+  //   return () => {
+  //     document.removeEventListener("contextmenu", handleContextMenu);
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
 
   useEffect(() => {
     // Register visit
@@ -57,37 +60,42 @@ function App() {
       .then((data) => setVisitorCount(data.total));
   }, []);
   return (
-    <div className="flex flex-col min-h-screen bg-[#1A1A1A] text-[#E5E7EB]">
-      <Navbar />
-      <SehriTicker />
-      <ScrollToTop />
-      <div className="flex-grow">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/find-sehri" element={<FindSehri />} />
-          <Route path="/prayer-times" element={<PrayerTimes />} />
-          <Route path="/providers" element={<ProviderCard />} />
-          <Route path="/disclaimer" element={<Disclaimer />} />
-          <Route path="/thank-you" element={<ThankYou />} />
-          <Route path="/organization-list" element={<OrganizationList />} />
-          <Route path="/register-sehri" element={<RegistrationPage />} />
-          <Route path="/ask-scholar" element={<AskScholar />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/dua" element={<DuaPage />} />
-          <Route path="/coming-soon" element={<ComingSoon />} />
-          <Route path="/help" element={<HelpSection />} />
-          <Route path="/sehri-locations" element={<MasjidMap />} />
-          <Route path="/sehri-locations2" element={<MasjidMap2 />} />
-          <Route path="/blogPage" element={<BlogPage />} />
-          <Route
-            path="/ramadan-sehri-chennai-2026"
-            element={<RamadanChennaiSEO />}
-          />
-        </Routes>
-      </div>
+    <>
+      <div className="flex flex-col min-h-screen bg-[#1A1A1A] text-[#E5E7EB]">
+        <Navbar />
+        <SehriTicker />
+        <ScrollToTop />
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/find-sehri" element={<FindSehri />} />
+            <Route path="/prayer-times" element={<PrayerTimes />} />
+            <Route path="/providers" element={<ProviderCard />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/organization-list" element={<OrganizationList />} />
+            <Route path="/register-sehri" element={<RegistrationPage />} />
+            <Route path="/ask-scholar" element={<AskScholar />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/dua" element={<DuaPage />} />
+            <Route path="/coming-soon" element={<ComingSoon />} />
+            <Route path="/help" element={<HelpSection />} />
+            <Route path="/sehri-locations" element={<MasjidMap />} />
+            <Route path="/sehri-locations2" element={<MasjidMap2 />} />
+            <Route path="/blogPage" element={<BlogPage />} /> 
+            <Route path="/areapages" element={<AreaPage />} /> 
+            <Route path="/ladies" element={<LadiesSehri />} /> 
+            <Route
+              path="/ramadan-sehri-chennai-2026"
+              element={<RamadanChennaiSEO />}
+            />
+          </Routes>
+        </div>
 
-      <Footer visitorCount={visitorCount} />
-    </div>
+        <Footer visitorCount={visitorCount} />
+      </div>
+      <FloatingBottomNav />
+    </>
   );
 }
 

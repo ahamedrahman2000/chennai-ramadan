@@ -72,66 +72,66 @@ export default function MasjidMap() {
   //     },
   //   );
   // };
-const getUserLocation = async () => {
-  setLocationRequested(true);
-  setLoading(true);
+  const getUserLocation = async () => {
+    setLocationRequested(true);
+    setLoading(true);
 
-  if (!navigator.geolocation) {
-    alert("Geolocation not supported by your browser");
-    setLoading(false);
-    return;
-  }
-
-  try {
-    const permission = await navigator.permissions.query({
-      name: "geolocation",
-    });
-
-    if (permission.state === "denied") {
-      alert(
-        "Location permission is blocked. Please enable it in your browser settings."
-      );
+    if (!navigator.geolocation) {
+      alert("Geolocation not supported by your browser");
       setLoading(false);
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const userLat = pos.coords.latitude;
-        const userLng = pos.coords.longitude;
+    try {
+      const permission = await navigator.permissions.query({
+        name: "geolocation",
+      });
 
-        const sorted = providers
-          .filter(
-            (p) =>
-              p.lat !== null &&
-              p.lng !== null &&
-              !isNaN(p.lat) &&
-              !isNaN(p.lng)
-          )
-          .map((p) => ({
-            ...p,
-            distance: calculateDistance(userLat, userLng, p.lat, p.lng),
-          }))
-          .sort((a, b) => a.distance - b.distance)
-          .slice(0, 5);
-
-        setNearestProviders(sorted);
+      if (permission.state === "denied") {
+        alert(
+          "Location permission is blocked. Please enable it in your browser settings.",
+        );
         setLoading(false);
-      },
-      (error) => {
-        console.error("Geolocation error:", error);
-        alert("Location access denied.");
-        setLoading(false);
+        return;
       }
-    );
-  } catch (err) {
-    console.error("Permission error:", err);
-    setLoading(false);
-  }
-};
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const userLat = pos.coords.latitude;
+          const userLng = pos.coords.longitude;
+
+          const sorted = providers
+            .filter(
+              (p) =>
+                p.lat !== null &&
+                p.lng !== null &&
+                !isNaN(p.lat) &&
+                !isNaN(p.lng),
+            )
+            .map((p) => ({
+              ...p,
+              distance: calculateDistance(userLat, userLng, p.lat, p.lng),
+            }))
+            .sort((a, b) => a.distance - b.distance)
+            .slice(0, 5);
+
+          setNearestProviders(sorted);
+          setLoading(false);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          alert("Location access denied.");
+          setLoading(false);
+        },
+      );
+    } catch (err) {
+      console.error("Permission error:", err);
+      setLoading(false);
+    }
+  };
 
   return (
-  <section className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-6 sm:py-">
+    <section className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-6 sm:py-">
       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#D4AF37] mb-4 sm:mb-6">
         Sehri Locations
       </h3>
@@ -144,10 +144,9 @@ const getUserLocation = async () => {
           >
             Show Nearby Sehri Locations
           </button>
-        <p className="text-red-500 font-bold text-center mt-3 animate-pulse">
-  ⚠️ Kindly allow location on your device.
-</p>
-
+          <p className="text-red-500 font-bold text-center mt-3 animate-pulse">
+            ⚠️ Kindly allow location on your device.
+          </p>
         </div>
       )}
 
@@ -178,7 +177,6 @@ const getUserLocation = async () => {
                   {walkMinutes ? ` (~${walkMinutes} min walk)` : ""}
                 </p>
                 <p className="text-xs text-gray-300">{item.address}</p>
-               
               </div>
             );
           })}
