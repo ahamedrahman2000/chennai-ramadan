@@ -145,7 +145,7 @@ export default function MasjidMap() {
             Show Nearby Sehri Locations
           </button>
           <p className="text-red-500 font-bold text-center mt-3 animate-pulse">
-            ⚠️ Kindly allow location on your device.
+            ⚠️ Kindly First allow location on your device.
           </p>
         </div>
       )}
