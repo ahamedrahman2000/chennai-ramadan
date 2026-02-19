@@ -133,7 +133,7 @@ export default function MasjidMap() {
   return (
     <section className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-6 sm:py-">
       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#D4AF37] mb-4 sm:mb-6">
-        Sehri Locations
+        Sehri Locations - <span className="text-red-600">after allow location refresh and click button</span>
       </h3>
 
       {!locationRequested && (
