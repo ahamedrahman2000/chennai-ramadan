@@ -57,7 +57,7 @@
       });
     });
   </script> -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <!-- <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignal = window.OneSignal || [];
     OneSignal.push(function () {
@@ -69,7 +69,42 @@
         allowLocalhostAsSecureOrigin: true
       });
     });
-  </script>
+  </script> -->
+
+  <!-- 1️⃣ Load the OneSignal SDK -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+<script>
+  // 2️⃣ Initialize OneSignal
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function () {
+    OneSignal.init({
+      appId: "3d529589-4679-4a83-ba79-ceb1df9affe3", // 🔑 replace with your real appId
+      notifyButton: {
+        enable: true, // shows the subscription button
+      },
+      allowLocalhostAsSecureOrigin: true // for local testing
+    });
+
+    // 3️⃣ Add event listeners AFTER init
+    OneSignal.on('subscriptionChange', function (isSubscribed) {
+      console.log("Subscription status:", isSubscribed);
+    });
+
+    OneSignal.on('notificationDisplay', function (event) {
+      console.log("Notification displayed:", event);
+    });
+
+    OneSignal.on('notificationDismiss', function (event) {
+      console.log("Notification dismissed:", event);
+    });
+
+    OneSignal.on('notificationPermissionChange', function (permissionChange) {
+      console.log("Permission changed:", permissionChange);
+    });
+  });
+</script>
+
 
 </head>
 
