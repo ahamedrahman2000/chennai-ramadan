@@ -190,6 +190,9 @@ export default function LadiesSehri() {
       {/* Title */}
       <h1 className="text-xl sm:text-3xl font-bold text-center mb-5 mt-5 sm:mb-6">
         Ladies Home Delivery Sehri
+        <p className="mt-2 text-sm sm:text-base text-red-500 font-medium  inline-block px-4 py-1 rounded-full shadow-sm">
+    ⚠️ After allowing location access, please refresh and click the button
+  </p>
       </h1>
 
       {/* 🔍 Filter Section */}
