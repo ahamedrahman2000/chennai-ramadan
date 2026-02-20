@@ -1,12 +1,11 @@
 import { AboutUs } from "../components/AboutUs";
-import Disclaimer from "../components/DisclaimerModal";
-import FeaturesSection from "../components/FeaturedSections";
+import Disclaimer from "../components/DisclaimerModal"; 
 import FeedbackForm from "../components/FeddbackForm";
 import { HelpSection } from "../components/HelpSection";
 import Hero from "../components/Hero";
 import HomeStatusPopup from "../components/HomeStatusPopup"; 
 import MasjidMap from "../components/MasjidMap"; 
-import MissionSection from "../components/MissionSection";
+import MissionSection from "../components/MissionSection"; 
 import OuMission from "../components/OurMission";
 import RamadanPopup from "../components/RamadanPopup";
 import SehriStats from "../components/SehriStats";
@@ -30,15 +29,13 @@ export default function Home() {
       <RamadanPopup />
       <HomeStatusPopup />
 
-      <Hero />
-
+      <Hero /> 
       <div id="map-section">
         <MasjidMap />
       </div>
       <HelpSection />
       <AboutUs />
-      <MissionSection />
-      <FeaturesSection />
+      <MissionSection /> 
       <OuMission />
       <SehriStats />
       <Disclaimer />

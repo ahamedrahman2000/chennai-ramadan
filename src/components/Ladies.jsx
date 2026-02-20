@@ -7,7 +7,7 @@ export default function LadiesSehri() {
   const [userLocation, setUserLocation] = useState(null);
   const [areaFilter, setAreaFilter] = useState("All");
   const [loading, setLoading] = useState(true);
-
+  const [locationBlocked, setLocationBlocked] = useState(false);
   // Fetch providers
   useEffect(() => {
     const fetchProviders = async () => {
@@ -44,8 +44,10 @@ export default function LadiesSehri() {
           lng: position.coords.longitude,
         });
       },
-      () => {
-        console.log("Location permission denied.");
+      (error) => {
+        if (error.code === 1) {
+          setLocationBlocked(true);
+        }
       },
     );
   }, []);
@@ -116,7 +118,7 @@ export default function LadiesSehri() {
   // Show Nearby Top 5
   const handleNearby = () => {
     if (!userLocation) {
-      alert("Location not available");
+      setLocationBlocked(true);
       return;
     }
 
@@ -138,36 +140,45 @@ export default function LadiesSehri() {
 
   return (
     <div className="relative min-h-screen bg-[#0f0f0f] text-white px-3 sm:px-4 py-6 sm:py-10 overflow-hidden">
-{/* 🌸 ULTRA PREMIUM RAMADAN BACKGROUND */}
-<div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-
-  {/* ✨ Divine Light Beam */}
-  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[400px] 
+      {/* 🌸 ULTRA PREMIUM RAMADAN BACKGROUND */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* ✨ Divine Light Beam */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[400px] 
                   bg-gradient-to-b from-pink-400/30 to-transparent 
-                  blur-3xl opacity-40 animate-lightBeam"></div>
+                  blur-3xl opacity-40 animate-lightBeam"
+        ></div>
 
-  {/* 🌙 Golden Crescent Corner */}
-  <div className="absolute top-[-60px] right-[-60px] w-64 h-64 
+        {/* 🌙 Golden Crescent Corner */}
+        <div
+          className="absolute top-[-60px] right-[-60px] w-64 h-64 
                   rounded-full border-[18px] border-yellow-400/70 
-                  opacity-40 rotate-12 blur-sm"></div>
+                  opacity-40 rotate-12 blur-sm"
+        ></div>
 
-  {/* 🌸 Parallax Floating Flowers */}
-  <div className="absolute text-pink-400 text-3xl left-[10%] animate-floatSlow">🌸</div>
-  <div className="absolute text-pink-300 text-2xl left-[35%] animate-floatMedium delay-1000">🌸</div>
-  <div className="absolute text-pink-500 text-4xl left-[65%] animate-floatFast delay-2000">🌸</div>
-  <div className="absolute text-pink-400 text-xl left-[85%] animate-floatMedium delay-3000">🌸</div>
+        {/* 🌸 Parallax Floating Flowers */}
+        <div className="absolute text-pink-400 text-3xl left-[10%] animate-floatSlow">
+          🌸
+        </div>
+        <div className="absolute text-pink-300 text-2xl left-[35%] animate-floatMedium delay-1000">
+          🌸
+        </div>
+        <div className="absolute text-pink-500 text-4xl left-[65%] animate-floatFast delay-2000">
+          🌸
+        </div>
+        <div className="absolute text-pink-400 text-xl left-[85%] animate-floatMedium delay-3000">
+          🌸
+        </div>
 
-  {/* ✨ Glitter Sparkles */}
-  <div className="absolute w-1 h-1 bg-pink-300 rounded-full top-[15%] left-[20%] animate-twinkle"></div>
-  <div className="absolute w-1.5 h-1.5 bg-yellow-300 rounded-full top-[65%] left-[70%] animate-twinkle delay-700"></div>
-  <div className="absolute w-1 h-1 bg-white rounded-full top-[40%] left-[45%] animate-twinkle delay-1200"></div>
+        {/* ✨ Glitter Sparkles */}
+        <div className="absolute w-1 h-1 bg-pink-300 rounded-full top-[15%] left-[20%] animate-twinkle"></div>
+        <div className="absolute w-1.5 h-1.5 bg-yellow-300 rounded-full top-[65%] left-[70%] animate-twinkle delay-700"></div>
+        <div className="absolute w-1 h-1 bg-white rounded-full top-[40%] left-[45%] animate-twinkle delay-1200"></div>
+      </div>
 
-</div>
-
-      
       {/* 🌸 Advice */}
       <div
-       className="backdrop-blur-xl 
+        className="backdrop-blur-xl 
            bg-white/5 
            border border-pink-400/30 
            p-4 sm:p-5 
@@ -176,7 +187,7 @@ export default function LadiesSehri() {
            hover:shadow-[0_0_40px_rgba(236,72,153,0.4)] 
            transition-all duration-500"
       >
-      <h1 className="text-xl sm:text-3xl font-bold text-center mb-5 sm:mb-6 shimmer-text">
+        <h1 className="text-xl sm:text-3xl font-bold text-center mb-5 sm:mb-6 shimmer-text">
           🌸 Ladies Sehri Support
         </h1>
         <p className="text-xs sm:text-sm">
@@ -189,10 +200,7 @@ export default function LadiesSehri() {
 
       {/* Title */}
       <h1 className="text-xl sm:text-3xl font-bold text-center mb-5 mt-5 sm:mb-6">
-        Ladies Home Delivery Sehri
-        <p className="mt-2 text-sm sm:text-base text-red-500 font-medium  inline-block px-4 py-1 rounded-full shadow-sm">
-    ⚠️ After allowing location access, please refresh and click the button
-  </p>
+        Home Delivery Sehri
       </h1>
 
       {/* 🔍 Filter Section */}
@@ -229,7 +237,28 @@ export default function LadiesSehri() {
           Show Nearby (Top 5)
         </button>
       </div>
+      {locationBlocked && (
+        <div className="max-w-md mx-auto mt-4 bg-red-900 text-white p-4 rounded-xl text-sm border border-red-500">
+          <p className="font-semibold mb-2">📍 Location Access Disabled</p>
+          <p className="mb-2">
+            Please enable location in your browser or device settings to use
+            Nearby feature.
+          </p>
+          <p className="text-xs text-gray-300">
+            After enabling location, refresh this page and try again.
+          </p>
 
+          <button
+            onClick={() => {
+              setLocationBlocked(false);
+              window.location.reload();
+            }}
+            className="mt-3 bg-pink-500 px-4 py-2 rounded text-white"
+          >
+            Refresh Page
+          </button>
+        </div>
+      )}
       {/* 🏠 Cards */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {filteredProviders.map((provider) => (

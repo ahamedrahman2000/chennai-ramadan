@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 export default function MasjidMap() {
   const [providers, setProviders] = useState([]);
   const [nearestProviders, setNearestProviders] = useState([]);
-  const [locationRequested, setLocationRequested] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [locationBlocked, setLocationBlocked] = useState(false);
 
   // Fetch providers from backend
   useEffect(() => {
@@ -35,46 +35,10 @@ export default function MasjidMap() {
     return R * c;
   };
 
-  // // Request user location
-  // const getUserLocation = () => {
-  //   setLocationRequested(true);
-  //   setLoading(true);
-
-  //   if (!navigator.geolocation) {
-  //     alert("Geolocation not supported by your browser");
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   navigator.geolocation.getCurrentPosition(
-  //     (pos) => {
-  //       const userLat = pos.coords.latitude;
-  //       const userLng = pos.coords.longitude;
-
-  //       const sorted = providers
-  //         .map((p) => ({
-  //           ...p,
-  //           distance: calculateDistance(userLat, userLng, p.lat, p.lng),
-  //         }))
-  //         .sort((a, b) => a.distance - b.distance)
-  //         .slice(0, 5);
-
-  //       setNearestProviders(sorted);
-  //       setLoading(false);
-  //     },
-  //     (error) => {
-  //       console.error("Geolocation error:", error);
-  //       alert(
-  //         "Location access denied. Showing providers without distance calculation.",
-  //       );
-  //       setNearestProviders([...providers].slice(0, 5)); // fallback
-  //       setLoading(false);
-  //     },
-  //   );
-  // };
+  // Request user location
   const getUserLocation = async () => {
-    setLocationRequested(true);
     setLoading(true);
+    setLocationBlocked(false);
 
     if (!navigator.geolocation) {
       alert("Geolocation not supported by your browser");
@@ -88,9 +52,7 @@ export default function MasjidMap() {
       });
 
       if (permission.state === "denied") {
-        alert(
-          "Location permission is blocked. Please enable it in your browser settings.",
-        );
+        setLocationBlocked(true);
         setLoading(false);
         return;
       }
@@ -106,7 +68,7 @@ export default function MasjidMap() {
                 p.lat !== null &&
                 p.lng !== null &&
                 !isNaN(p.lat) &&
-                !isNaN(p.lng),
+                !isNaN(p.lng)
             )
             .map((p) => ({
               ...p,
@@ -120,9 +82,14 @@ export default function MasjidMap() {
         },
         (error) => {
           console.error("Geolocation error:", error);
-          alert("Location access denied.");
+
+          if (error.code === 1) {
+            // Permission denied
+            setLocationBlocked(true);
+          }
+
           setLoading(false);
-        },
+        }
       );
     } catch (err) {
       console.error("Permission error:", err);
@@ -131,37 +98,47 @@ export default function MasjidMap() {
   };
 
   return (
-    <section className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-6 sm:py-">
+    <section className="relative min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-6">
+      
+      {/* Title */}
       <div className="text-center mb-6 sm:mb-8">
-  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#D4AF37] tracking-wide">
-    Sehri Locations
-  </h3>
+        <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#D4AF37] tracking-wide">
+          Sehri Locations
+        </h3>
+      </div>
 
-  <p className="mt-2 text-sm sm:text-base text-red-500 font-medium  inline-block px-4 py-1 rounded-full shadow-sm">
-    ⚠️ After allowing location access, please refresh and click the button
-  </p>
-</div>
+      {/* Location Button (Always Visible) */}
+      <div className="text-center mb-6">
+        <button
+          onClick={getUserLocation}
+          className="bg-[#D4AF37] text-black font-semibold py-2 px-6 rounded hover:bg-yellow-400 transition"
+        >
+          Show Nearby Sehri Locations
+        </button>
+      </div>
 
-
-      {!locationRequested && (
-        <div className="text-center mb-6">
-          <button
-            onClick={getUserLocation}
-            className="bg-[#D4AF37] text-black font-semibold py-2 px-6 rounded hover:bg-yellow-400 transition"
-          >
-            Show Nearby Sehri Locations
-          </button>
-          <p className="text-red-500 font-bold text-center mt-3 animate-pulse">
-            ⚠️ Kindly First allow location on your device.
-          </p>
-        </div>
-      )}
-
+      {/* Loading */}
       {loading && (
         <div className="text-center text-[#D4AF37] font-semibold mb-4">
           Loading nearby locations...
         </div>
       )}
+
+      {/* Location Blocked Message */}
+      {locationBlocked && (
+        <div className="max-w-md mx-auto bg-red-900 text-white p-4 rounded-lg mt-4 text-sm">
+          <p className="font-semibold mb-2">📍 Location Permission Disabled</p>
+          <p className="mb-2">
+            Please enable location in your device settings to see nearby Sehri
+            locations.
+          </p>
+          <p className="text-xs text-gray-300">
+            After enabling location, refresh this page and try again.
+          </p>
+        </div>
+      )}
+
+      {/* Nearby Providers */}
       {nearestProviders.length > 0 && (
         <div className="max-w-4xl mx-auto bg-[#222] p-6 mt-5 rounded-xl border border-[#333]">
           <h3 className="text-[#D4AF37] text-xl font-bold mb-4">
@@ -172,6 +149,7 @@ export default function MasjidMap() {
             const walkMinutes = item.distance
               ? Math.round((item.distance / 5) * 60)
               : null;
+
             return (
               <div
                 key={item.id}
@@ -179,8 +157,8 @@ export default function MasjidMap() {
               >
                 <p className="font-semibold text-xs">{item.name}</p>
                 <p className="text-xs text-gray-400">
-                  {item.area}{" "}
-                  {item.distance ? `• ${item.distance.toFixed(2)} km` : ""}
+                  {item.area}
+                  {item.distance ? ` • ${item.distance.toFixed(2)} km` : ""}
                   {walkMinutes ? ` (~${walkMinutes} min walk)` : ""}
                 </p>
                 <p className="text-xs text-gray-300">{item.address}</p>
@@ -189,8 +167,9 @@ export default function MasjidMap() {
           })}
         </div>
       )}
+
       {/* Google My Map */}
-      <div className="max-w-6xl mx-auto mb-6">
+      <div className="max-w-6xl mx-auto mb-6 mt-8">
         <iframe
           src="https://www.google.com/maps/d/embed?mid=1w8sJbVcvXSBCEs8HrDN9_Mfy7iv5fEw"
           width="100%"

@@ -32,7 +32,7 @@ export default function CompactBottomNav() {
   return (
     <nav
       className={`
-        fixed bottom-1 lg:hidden left-1/2 transform -translate-x-1/2
+        fixed bottom-1 lg:hidden left-1/2 transform -translate-x-1/2 border border-yellow-600
         flex justify-around w-[90%] max-w-sm bg-[#111111]/80 backdrop-blur-sm
         rounded-2xl shadow-md transition-all duration-300 z-50
         ${show ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"}

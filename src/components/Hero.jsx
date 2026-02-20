@@ -13,8 +13,8 @@ import {
   Users,
   Wifi,
   ListChecks,
-  Mic2,
-  MapPinHouse,
+  Mic2, 
+  Search, 
 } from "lucide-react";
 import HomeStatusPopup from "./HomeStatusPopup";
 
@@ -199,7 +199,7 @@ export default function Hero() {
 
             <div className="mt-6 sm:mt-8 grid  grid-cols-4 gap-4 max-w-xl mx-auto md:mx-0">
               {[
-                { to: "/find-sehri", icon: <MapPin size={26} />, name: "Find" },
+                { to: "/find-sehri", icon: <Search size={26} />, name: "Find" },
                 {
                   to: "/register-sehri",
                   icon: <PlusCircle size={26} />,
@@ -212,7 +212,7 @@ export default function Hero() {
                 },
                 {
                   to: "/sehri-locations",
-                  icon: <MapPinHouse size={26} />,
+                  icon: <MapPin size={26} />,
                   name: "Locations",
                 },
                 {

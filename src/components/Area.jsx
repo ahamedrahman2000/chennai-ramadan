@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; 
 
 export default function AreaPage() {
   const [areas, setAreas] = useState([]);
@@ -22,6 +22,7 @@ export default function AreaPage() {
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 py-6">
   
+         
   <h1 className="text-2xl sm:text-3xl font-bold text-center text-[#D4AF37] mb-6">
     🗺️ Areas
   </h1>

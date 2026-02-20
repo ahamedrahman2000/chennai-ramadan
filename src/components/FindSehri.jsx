@@ -111,10 +111,19 @@ Additional Info: ${provider.additionalInfo || "N/A"}
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-[#E5E7EB] px-4 sm:px-6 py-5">
       {/* Header */}
-      <h1 className="text-xl font-bold text-center mb-8">
+      <h1 className="text-xl font-bold text-center mb-4">
         Sehri Locations – Chennai
       </h1>
 
+      <p className="text-center text-sm text-gray-600 mb-8">
+        If struggling to search, find in 👉{" "}
+        <a
+          href="/sehri-locations"
+          className="text-blue-600 font-medium underline hover:text-blue-800"
+        >
+          Location page
+        </a>
+      </p>
       {/* FILTER SECTION */}
       <div className="max-w-7xl mx-auto bg-[#222] p-6 rounded-2xl mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
