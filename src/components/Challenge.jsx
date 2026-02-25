@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
@@ -8,49 +8,70 @@ export default function Challenge() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [input, setInput] = useState("");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // 🔹 Handle window resize
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 🔹 Fetch ayahs
+  const fetchAyahs = useCallback(async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const { data, error } = await supabase
+        .from("quran_ayahs")
+        .select("*")
+        .eq("surah_number", surahNumber)
+        .order("ayah_number", { ascending: true });
+
+      if (error) {
+        console.error("Supabase error:", error);
+        setError("Failed to fetch ayahs.");
+      } else if (!data || data.length === 0) {
+        setError("No ayahs found for this surah.");
+      } else {
+        setAyahs(data);
+        setCurrentIndex(0);
+      }
+    } catch (e) {
+      console.error("Network error:", e);
+      setError("Network error while fetching ayahs.");
+    } finally {
+      setLoading(false);
+    }
+  }, [surahNumber]);
 
   useEffect(() => {
     fetchAyahs();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [surahNumber]);
+  }, [fetchAyahs]);
 
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 768);
-  };
-
-  const fetchAyahs = async () => {
-    const { data } = await supabase
-      .from("quran_ayahs")
-      .select("*")
-      .eq("surah_number", surahNumber)
-      .order("ayah_number", { ascending: true });
-
-    if (data) setAyahs(data);
-  };
-
-  const currentAyah = ayahs[currentIndex];
-
+  // 🔹 Handle typing input
   const handleChange = (e) => {
     const value = e.target.value;
     setInput(value);
 
+    const currentAyah = ayahs[currentIndex];
     if (currentAyah && value === currentAyah.content) {
       setInput("");
       setCurrentIndex((prev) => prev + 1);
     }
   };
 
+  // 🔹 Render ayah with colored typing
   const renderAyah = (ayah, index) => {
     if (index < currentIndex) {
       return <span style={{ color: "#00ff99" }}>{ayah.content}</span>;
     }
-
     if (index === currentIndex) {
       return ayah.content.split("").map((char, i) => {
         const typedChar = input[i];
         const isCorrect = typedChar === char;
-
         return (
           <span
             key={i}
@@ -67,14 +88,25 @@ export default function Challenge() {
         );
       });
     }
-
     return <span style={{ color: "#444" }}>{ayah.content}</span>;
   };
 
-  // 🔥 Sliding window logic for mobile
+  // 🔹 Sliding window for mobile
   const visibleAyahs = isMobile
     ? ayahs.slice(currentIndex, currentIndex + 3)
     : ayahs;
+
+  // 🔹 Loading or error
+  if (loading) {
+    return <div style={{ padding: "20px", color: "#eee" }}>Loading ayahs...</div>;
+  }
+  if (error) {
+    return (
+      <div style={{ padding: "20px", color: "red" }}>
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div style={container}>
@@ -82,10 +114,7 @@ export default function Challenge() {
 
       <div style={ayahContainer}>
         {visibleAyahs.map((ayah, index) => {
-          const realIndex = isMobile
-            ? currentIndex + index
-            : index;
-
+          const realIndex = isMobile ? currentIndex + index : index;
           return (
             <div key={ayah.ayah_number} style={ayahBox}>
               <span style={{ color: "#888", marginRight: "6px" }}>
@@ -107,16 +136,13 @@ export default function Challenge() {
           autoFocus
         />
       ) : (
-        <h3 style={{ color: "#00ff99" }}>
-          Surah Completed 🎉
-        </h3>
+        <h3 style={{ color: "#00ff99" }}>Surah Completed 🎉</h3>
       )}
     </div>
   );
 }
 
 /* ===== STYLES ===== */
-
 const container = {
   maxWidth: "900px",
   margin: "auto",
