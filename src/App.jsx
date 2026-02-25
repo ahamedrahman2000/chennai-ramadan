@@ -24,29 +24,31 @@ import BlogPage from "./components/Blog";
 import FloatingBottomNav from "./components/BottomNav"; 
 import AreaPage from "./components/Area";
 import LadiesSehri from "./components/Ladies";
+import SelectSurah from "./components/SelectSurah";
+import Challenge from "./components/Challenge";
 function App() {
   const [visitorCount, setVisitorCount] = useState(0);
-  useEffect(() => {
-    // Disable right-click
-    const handleContextMenu = (e) => e.preventDefault();
-    document.addEventListener("contextmenu", handleContextMenu);
+  // useEffect(() => {
+  //   // Disable right-click
+  //   const handleContextMenu = (e) => e.preventDefault();
+  //   document.addEventListener("contextmenu", handleContextMenu);
 
-    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-    const handleKeyDown = (e) => {
-      if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
-        (e.ctrlKey && e.key.toUpperCase() === "U")
-      ) {
-        e.preventDefault();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  //   // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+  //   const handleKeyDown = (e) => {
+  //     if (
+  //       e.key === "F12" ||
+  //       (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
+  //       (e.ctrlKey && e.key.toUpperCase() === "U")
+  //     ) {
+  //       e.preventDefault();
+  //     }
+  //   };
+  //   document.addEventListener("keydown", handleKeyDown);
+  //   return () => {
+  //     document.removeEventListener("contextmenu", handleContextMenu);
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
 
   useEffect(() => {
     // Register visit
@@ -89,6 +91,8 @@ function App() {
               path="/ramadan-sehri-chennai-2026"
               element={<RamadanChennaiSEO />}
             />
+            <Route path="/select-surah" element={<SelectSurah />} />
+            <Route path="/challenge/:surahNumber" element={<Challenge />} />
           </Routes>
         </div>
 

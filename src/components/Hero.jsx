@@ -235,9 +235,9 @@ export default function Hero() {
                 { to: "/blogPage", icon: <Mic2 size={26} />, name: "Lectures" },
                 { to: "/areapages", icon: <Grid size={26} />, name: "Areas" },
                 {
-                  to: "/coming-soon",
+                  to: "/select-surah",
                   icon: <MessageCircle size={26} />,
-                  name: "Chat",
+                  name: "Quran Typing Class",
                 },
               ].map((item, index) => (
                 <Link
