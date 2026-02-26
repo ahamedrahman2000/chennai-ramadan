@@ -71,30 +71,64 @@ export default function QiblaMapCompass() {
   useEffect(() => {
     if (!userLocation || !headingLineRef.current) return;
 
+    // const handleOrientation = (event) => {
+    //   let compassHeading;
+
+    //   if (event.webkitCompassHeading) {
+    //     compassHeading = event.webkitCompassHeading;
+    //   } else if (event.alpha !== null) {
+    //     compassHeading = 360 - event.alpha;
+    //   }
+
+    //   if (compassHeading !== undefined) {
+    //     // Compute end point for heading line
+    //     const distance = 0.01; // ~1km line
+    //     const rad = (compassHeading * Math.PI) / 180;
+
+    //     const lat2 = userLocation.lat + distance * Math.cos(rad);
+    //     const lng2 = userLocation.lng + distance * Math.sin(rad);
+
+    //     headingLineRef.current.setLatLngs([
+    //       [userLocation.lat, userLocation.lng],
+    //       [lat2, lng2],
+    //     ]);
+    //   }
+    // };
+
     const handleOrientation = (event) => {
-      let compassHeading;
+  let compassHeading;
 
-      if (event.webkitCompassHeading) {
-        compassHeading = event.webkitCompassHeading;
-      } else if (event.alpha !== null) {
-        compassHeading = 360 - event.alpha;
-      }
+  // iOS
+  if (event.webkitCompassHeading) {
+    compassHeading = event.webkitCompassHeading;
+  } 
+  // Android / modern browsers
+  else if (event.alpha !== null) {
+    // alpha is 0 when device top is facing north
+    compassHeading = 360 - event.alpha;
+  }
 
-      if (compassHeading !== undefined) {
-        // Compute end point for heading line
-        const distance = 0.01; // ~1km line
-        const rad = (compassHeading * Math.PI) / 180;
+  // Adjust if phone is in portrait
+  if (window.orientation !== undefined) {
+    compassHeading = (compassHeading + window.orientation) % 360;
+  }
 
-        const lat2 = userLocation.lat + distance * Math.cos(rad);
-        const lng2 = userLocation.lng + distance * Math.sin(rad);
+  if (compassHeading !== undefined) {
+    // Convert to radian
+    const rad = (compassHeading * Math.PI) / 180;
 
-        headingLineRef.current.setLatLngs([
-          [userLocation.lat, userLocation.lng],
-          [lat2, lng2],
-        ]);
-      }
-    };
+    // 0.01 degrees distance for the line
+    const distance = 0.01;
 
+    const lat2 = userLocation.lat + distance * Math.cos(rad);
+    const lng2 = userLocation.lng + distance * Math.sin(rad);
+
+    headingLineRef.current.setLatLngs([
+      [userLocation.lat, userLocation.lng],
+      [lat2, lng2],
+    ]);
+  }
+};
     // iOS permission
     if (
       typeof DeviceOrientationEvent !== "undefined" &&
