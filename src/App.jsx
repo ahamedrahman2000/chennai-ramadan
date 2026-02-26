@@ -26,6 +26,8 @@ import AreaPage from "./components/Area";
 import LadiesSehri from "./components/Ladies";
 import SelectSurah from "./components/SelectSurah";
 import Challenge from "./components/Challenge";
+import QiblaCompass from "./components/QiblaCompass";
+import QiblaMap from "./components/QiblaMap";
 function App() {
   const [visitorCount, setVisitorCount] = useState(0);
   useEffect(() => {
@@ -87,6 +89,8 @@ function App() {
             <Route path="/blogPage" element={<BlogPage />} /> 
             <Route path="/areapages" element={<AreaPage />} /> 
             <Route path="/ladies" element={<LadiesSehri />} /> 
+            <Route path="/qibla-compass" element={<QiblaCompass />} /> 
+            <Route path="/qibla-map" element={<QiblaMap />} /> 
             <Route
               path="/ramadan-sehri-chennai-2026"
               element={<RamadanChennaiSEO />}

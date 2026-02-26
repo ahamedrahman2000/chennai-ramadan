@@ -215,6 +215,7 @@ export default function Hero() {
                   icon: <MapPin size={26} />,
                   name: "Locations",
                 },
+              
                 {
                   to: "/ask-scholar",
                   icon: <UserCheck size={26} />,

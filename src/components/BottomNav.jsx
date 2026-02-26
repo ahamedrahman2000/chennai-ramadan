@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, MapPin, PlusCircle,  MapPinHouse } from "lucide-react";
+import { Home, MapPin, PlusCircle,  CompassIcon } from "lucide-react";
 
 export default function CompactBottomNav() {
   const location = useLocation();
@@ -26,9 +26,8 @@ export default function CompactBottomNav() {
     { name: "Home", path: "/", icon: <Home size={20} /> },
     { name: "Find", path: "/find-sehri", icon: <MapPin size={20} /> },
     { name: "Register", path: "/register-sehri", icon: <PlusCircle size={20} /> },
-    { name: "Locations", path: "/sehri-locations", icon: <MapPinHouse size={20} /> },
-  ];
-
+    { name: "Qibla", path: "/qibla-map", icon: <CompassIcon size={20} /> },
+  ]; 
   return (
     <nav
       className={`
