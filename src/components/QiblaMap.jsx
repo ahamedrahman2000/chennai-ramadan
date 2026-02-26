@@ -96,38 +96,39 @@ export default function QiblaMapCompass() {
     // };
 
     const handleOrientation = (event) => {
-  let compassHeading;
+  if (!userLocation) return;
 
-  // iOS
-  if (event.webkitCompassHeading) {
-    compassHeading = event.webkitCompassHeading;
-  } 
-  // Android / modern browsers
-  else if (event.alpha !== null) {
-    // alpha is 0 when device top is facing north
-    compassHeading = 360 - event.alpha;
-  }
+  // Get device orientation in degrees
+  let alpha = event.alpha; // rotation around z-axis
+  let beta = event.beta;   // front/back tilt
+  let gamma = event.gamma; // left/right tilt
 
-  // Adjust if phone is in portrait
-  if (window.orientation !== undefined) {
-    compassHeading = (compassHeading + window.orientation) % 360;
-  }
+  if (alpha === null) return;
 
-  if (compassHeading !== undefined) {
-    // Convert to radian
-    const rad = (compassHeading * Math.PI) / 180;
+  // Convert to radian
+  const toRad = (deg) => (deg * Math.PI) / 180;
 
-    // 0.01 degrees distance for the line
-    const distance = 0.01;
+  // Correct for phone flat on table
+  // formula: heading = alpha - gamma * cos(beta)
+  const gammaRad = toRad(gamma);
+  const betaRad = toRad(beta);
+  const alphaRad = toRad(alpha);
 
-    const lat2 = userLocation.lat + distance * Math.cos(rad);
-    const lng2 = userLocation.lng + distance * Math.sin(rad);
+  // Calculate compass heading in degrees
+  const heading = (alpha - gamma * Math.cos(betaRad) + 360) % 360;
 
-    headingLineRef.current.setLatLngs([
-      [userLocation.lat, userLocation.lng],
-      [lat2, lng2],
-    ]);
-  }
+  // Distance for line (~1km)
+  const distance = 0.01;
+  const rad = (heading * Math.PI) / 180;
+
+  // End point for red line
+  const lat2 = userLocation.lat + distance * Math.cos(rad);
+  const lng2 = userLocation.lng + distance * Math.sin(rad);
+
+  headingLineRef.current.setLatLngs([
+    [userLocation.lat, userLocation.lng],
+    [lat2, lng2],
+  ]);
 };
     // iOS permission
     if (
