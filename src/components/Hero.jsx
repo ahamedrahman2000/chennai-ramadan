@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import {
   MapPin,
   PlusCircle,
-  Grid,
-  MessageCircle,
+  Grid, 
   Book,
   UserCheck,
   Clock,
@@ -15,6 +14,7 @@ import {
   ListChecks,
   Mic2, 
   Search, 
+  TypeIcon, 
 } from "lucide-react";
 import HomeStatusPopup from "./HomeStatusPopup";
 
@@ -236,8 +236,8 @@ export default function Hero() {
                 { to: "/areapages", icon: <Grid size={26} />, name: "Areas" },
                 {
                   to: "/select-surah",
-                  icon: <MessageCircle size={26} />,
-                  name: "Quran Typing Class",
+                  icon: <TypeIcon size={26} />,
+                  name: "Quran Typing",
                 },
               ].map((item, index) => (
                 <Link
