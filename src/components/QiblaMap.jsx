@@ -1,170 +1,156 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 
-export default function QiblaMapCompass() {
+export default function QiblaMap() {
   const mapRef = useRef(null);
-  const userMarkerRef = useRef(null);
-  const qiblaLineRef = useRef(null);
   const headingLineRef = useRef(null);
+  const qiblaLineRef = useRef(null);
 
   const [userLocation, setUserLocation] = useState(null);
+  const [error, setError] = useState("");
 
   // Kaaba coordinates
   const KAABA = { lat: 21.4225, lng: 39.8262 };
 
-  // 1️⃣ Get User Location
-  useEffect(() => {
-    if (!navigator.geolocation) return alert("Geolocation not supported");
+  // Calculate Qibla angle from user location
+  const calculateQibla = (lat, lng) => {
+    const toRad = (deg) => (deg * Math.PI) / 180;
+    const toDeg = (rad) => (rad * 180) / Math.PI;
 
+    const φ1 = toRad(lat);
+    const φ2 = toRad(KAABA.lat);
+    const Δλ = toRad(KAABA.lng - lng);
+
+    const y = Math.sin(Δλ);
+    const x = Math.cos(φ1) * Math.tan(φ2) - Math.sin(φ1) * Math.cos(Δλ);
+    const θ = Math.atan2(y, x);
+    return (toDeg(θ) + 360) % 360;
+  };
+
+  // Get user location
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation not supported");
+      return;
+    }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         setUserLocation({ lat, lng });
       },
-      () => alert("Location permission denied"),
-      { enableHighAccuracy: true }
+      () => setError("Location permission denied")
     );
-  }, []);
+  };
 
-  // 2️⃣ Initialize Leaflet Map
+  // Initialize map
   useEffect(() => {
     if (!userLocation) return;
 
-    mapRef.current = L.map("map", { zoomControl: false }).setView(
-      [userLocation.lat, userLocation.lng],
-      15
-    );
+    mapRef.current = L.map("map", {
+      center: [userLocation.lat, userLocation.lng],
+      zoom: 17,
+    });
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap contributors",
+      attribution: "&copy; OpenStreetMap contributors",
     }).addTo(mapRef.current);
 
-    // User marker
-    userMarkerRef.current = L.circleMarker([userLocation.lat, userLocation.lng], {
-      radius: 8,
-      color: "blue",
-      fillColor: "blue",
-      fillOpacity: 1,
-    }).addTo(mapRef.current);
+    // Qibla line (yellow)
+    const qiblaAngle = calculateQibla(userLocation.lat, userLocation.lng);
+    const distance = 0.01; // small distance to draw line
+    const rad = (qiblaAngle * Math.PI) / 180;
+    const qiblaLat = userLocation.lat + distance * Math.cos(rad);
+    const qiblaLng = userLocation.lng + distance * Math.sin(rad);
 
-    // Qibla line (fixed)
     qiblaLineRef.current = L.polyline(
       [
         [userLocation.lat, userLocation.lng],
-        [KAABA.lat, KAABA.lng],
+        [qiblaLat, qiblaLng],
       ],
       { color: "yellow", weight: 3 }
     ).addTo(mapRef.current);
 
-    // Heading line (dynamic)
+    // Heading line (red)
     headingLineRef.current = L.polyline(
       [
         [userLocation.lat, userLocation.lng],
-        [userLocation.lat, userLocation.lng],
+        [userLocation.lat, userLocation.lng], // temporary, will update
       ],
       { color: "red", weight: 3 }
     ).addTo(mapRef.current);
-  }, [userLocation, KAABA.lat, KAABA.lng]);
 
-  // 3️⃣ Device Orientation for mobile
-  useEffect(() => {
+    // Marker for user
+    L.circleMarker([userLocation.lat, userLocation.lng], {
+      radius: 6,
+      color: "cyan",
+      fillColor: "cyan",
+      fillOpacity: 1,
+    }).addTo(mapRef.current);
+
+  }, [userLocation]);
+
+  // Device orientation handler
+  const handleOrientation = (event) => {
     if (!userLocation || !headingLineRef.current) return;
 
-    // const handleOrientation = (event) => {
-    //   let compassHeading;
+    let alpha = event.alpha;
+    let beta = event.beta;
+    let gamma = event.gamma;
 
-    //   if (event.webkitCompassHeading) {
-    //     compassHeading = event.webkitCompassHeading;
-    //   } else if (event.alpha !== null) {
-    //     compassHeading = 360 - event.alpha;
-    //   }
+    if (alpha === null) return;
 
-    //   if (compassHeading !== undefined) {
-    //     // Compute end point for heading line
-    //     const distance = 0.01; // ~1km line
-    //     const rad = (compassHeading * Math.PI) / 180;
+    // Correct heading for phone flat (top/front as needle)
+    const heading = (alpha - gamma * Math.cos((beta * Math.PI) / 180) + 360) % 360;
 
-    //     const lat2 = userLocation.lat + distance * Math.cos(rad);
-    //     const lng2 = userLocation.lng + distance * Math.sin(rad);
+    // Update heading line
+    const distance = 0.01;
+    const rad = (heading * Math.PI) / 180;
+    const lat2 = userLocation.lat + distance * Math.cos(rad);
+    const lng2 = userLocation.lng + distance * Math.sin(rad);
 
-    //     headingLineRef.current.setLatLngs([
-    //       [userLocation.lat, userLocation.lng],
-    //       [lat2, lng2],
-    //     ]);
-    //   }
-    // };
+    headingLineRef.current.setLatLngs([
+      [userLocation.lat, userLocation.lng],
+      [lat2, lng2],
+    ]);
+  };
 
-    const handleOrientation = (event) => {
-  if (!userLocation) return;
+  // Request orientation permission
+  useEffect(() => {
+    getLocation();
 
-  // Get device orientation in degrees
-  let alpha = event.alpha; // rotation around z-axis
-  let beta = event.beta;   // front/back tilt
-  let gamma = event.gamma; // left/right tilt
-
-  if (alpha === null) return;
-
-  // Convert to radian
-  const toRad = (deg) => (deg * Math.PI) / 180;
-
-  // Correct for phone flat on table
-  // formula: heading = alpha - gamma * cos(beta)
-  const gammaRad = toRad(gamma);
-  const betaRad = toRad(beta);
-  const alphaRad = toRad(alpha);
-
-  // Calculate compass heading in degrees
-  const heading = (alpha - gamma * Math.cos(betaRad) + 360) % 360;
-
-  // Distance for line (~1km)
-  const distance = 0.01;
-  const rad = (heading * Math.PI) / 180;
-
-  // End point for red line
-  const lat2 = userLocation.lat + distance * Math.cos(rad);
-  const lng2 = userLocation.lng + distance * Math.sin(rad);
-
-  headingLineRef.current.setLatLngs([
-    [userLocation.lat, userLocation.lng],
-    [lat2, lng2],
-  ]);
-};
-    // iOS permission
     if (
       typeof DeviceOrientationEvent !== "undefined" &&
       typeof DeviceOrientationEvent.requestPermission === "function"
     ) {
-      DeviceOrientationEvent.requestPermission().then((res) => {
-        if (res === "granted") {
-          window.addEventListener("deviceorientation", handleOrientation);
-        }
-      });
+      DeviceOrientationEvent.requestPermission()
+        .then((response) => {
+          if (response === "granted") {
+            window.addEventListener("deviceorientation", handleOrientation);
+          } else setError("Orientation permission denied");
+        })
+        .catch(() => setError("Orientation permission denied"));
     } else {
-      window.addEventListener("deviceorientation", handleOrientation);
+      window.addEventListener("deviceorientationabsolute", handleOrientation);
     }
 
-    return () =>
+    return () => {
       window.removeEventListener("deviceorientation", handleOrientation);
-  }, [userLocation]);
+      window.removeEventListener("deviceorientationabsolute", handleOrientation);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
-      <h2 className="text-yellow-400 text-2xl mb-4 font-bold text-center">
-        Qibla Map + Compass
-      </h2>
-
+      <h2 className="text-2xl font-bold text-yellow-400 mb-4">Qibla Compass</h2>
+      {error && <p className="text-red-400 mb-2">{error}</p>}
       <div
         id="map"
-        className="w-full h-[500px] md:h-[600px] rounded-xl shadow-lg"
+        className="w-full max-w-md h-96 border-2 border-yellow-500 rounded-lg"
       ></div>
-
-      {userLocation && (
-        <p className="mt-4 text-center">
-          Rotate your phone to align <span className="text-red-500">red</span>{" "}
-          line with <span className="text-yellow-400">yellow</span> Qibla line
-        </p>
-      )}
+      <p className="mt-2 text-yellow-300 text-sm">
+        Align the <span className="font-bold">top of your phone</span> with the red line to match the yellow Qibla line.
+      </p>
     </div>
   );
 }
